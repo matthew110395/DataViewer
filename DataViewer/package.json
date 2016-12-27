@@ -1,0 +1,9 @@
+{
+  "name": "data-viewer",
+  "version": "0.0.0",
+  "description": "DataViewer",
+  "main": "server.js",
+  "author": {
+    "name": "matts"
+  }
+}
