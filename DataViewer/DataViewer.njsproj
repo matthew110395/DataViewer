@@ -30,17 +30,31 @@
     <DebugSymbols>true</DebugSymbols>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Public\js\index.js" />
+    <Compile Include="Public\js\jquery-3.1.1.js" />
     <Compile Include="server.js" />
+    <Compile Include="Twitter\server.js" />
     <Content Include="package.json" />
+    <Content Include="Public\index.html" />
     <Content Include="README.md" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Twitter\" />
+    <Folder Include="Public\" />
+    <Folder Include="Public\js\" />
+    <Folder Include="Public\css\" />
     <Folder Include="typings\" />
     <Folder Include="typings\globals\" />
+    <Folder Include="typings\globals\chart.js\" />
+    <Folder Include="typings\globals\jquery\" />
     <Folder Include="typings\globals\node\" />
+    <Folder Include="typings\globals\socket.io\" />
   </ItemGroup>
   <ItemGroup>
+    <TypeScriptCompile Include="typings\globals\chart.js\index.d.ts" />
+    <TypeScriptCompile Include="typings\globals\jquery\index.d.ts" />
     <TypeScriptCompile Include="typings\globals\node\index.d.ts" />
+    <TypeScriptCompile Include="typings\globals\socket.io\index.d.ts" />
     <TypeScriptCompile Include="typings\index.d.ts" />
   </ItemGroup>
   <!-- Do not delete the following Import Project.  While this appears to do nothing it is a marker for setting TypeScript properties before our import that depends on them. -->
