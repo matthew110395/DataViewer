@@ -4,12 +4,34 @@ var express = require('express');
 var app = express();
 var http = require('http').Server(app);
 var io = require('socket.io')(http);
-var tweets = require('./Data/test.json');
+var mysql = require("mysql");
 
-console.log(tweets);
-//$.getJSON("./Data/smtweets.js", function (json) {
-//    tweets = json
-//});
+
+var con = mysql.createConnection({
+    host: "matthew95.co.uk",
+    user: "root",
+    password: "matt110395",
+    database: "tweets",
+    charset: "utf8mb4_unicode_ci"
+});
+var noTweets = 0;
+function refNoTweets() {
+    con.query("SELECT Count(tid) AS 'noTw' FROM tweets WHERE right(created,4) = DATE_FORMAT(CURDATE(),'%Y') AND left(created,10)=DATE_FORMAT(CURDATE(),'%a %b %d')", function (err, rows) {
+        if (err) throw err;
+
+        console.log('Data received from Db:\n');
+        if (noTweets != rows[0].noTw) {
+
+            noTweets = rows[0].noTw;
+            io.emit('noTw', noTweets);
+        }
+
+
+    });
+
+}
+setInterval(refNoTweets, 5000)
+
 
 
 app.use(express.static('public'));

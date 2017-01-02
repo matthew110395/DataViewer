@@ -1,8 +1,8 @@
 {
   "resolution": "main",
   "tree": {
-    "src": "https://raw.githubusercontent.com/DefinitelyTyped/DefinitelyTyped/b4cd313a9a5cfa016fb8cacebb957c6e41473ce1/chart.js/index.d.ts",
-    "raw": "registry:dt/chart.js#0.0.0+20161108134332",
-    "typings": "https://raw.githubusercontent.com/DefinitelyTyped/DefinitelyTyped/b4cd313a9a5cfa016fb8cacebb957c6e41473ce1/chart.js/index.d.ts"
+    "src": "https://raw.githubusercontent.com/DefinitelyTyped/DefinitelyTyped/7e9d61b7882acc2278bfe2c7b7b843e587af6d85/chart.js/index.d.ts",
+    "raw": "registry:dt/chart.js#0.0.0+20161224200041",
+    "typings": "https://raw.githubusercontent.com/DefinitelyTyped/DefinitelyTyped/7e9d61b7882acc2278bfe2c7b7b843e587af6d85/chart.js/index.d.ts"
   }
 }

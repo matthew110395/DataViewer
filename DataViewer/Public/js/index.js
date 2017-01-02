@@ -1,4 +1,6 @@
-﻿
+﻿var noTweets = 0
+var socket = io();
+
 setInterval(function () {
     var date = new Date();
 
@@ -6,6 +8,27 @@ setInterval(function () {
 
     $('#time').html(time);
 }, 1000);
+
+socket.on('noTw', function (msg) {
+    noTweets = msg;
+
+    $('#noTwe').html('<h1>' + noTweets + '</h1>');
+
+});
+
+//Rotate through divs which have an id beinging with chart
+var divs = $('div[id^="chart"]').hide(),
+    i = 0;
+
+(function cycle() {
+
+    divs.eq(i).fadeIn(400)
+        .delay(10000)
+        .fadeOut(400, cycle);
+
+    i = ++i % divs.length;
+
+})();
 
 var ctx = document.getElementById("myChart");
 var myChart = new Chart(ctx, {
@@ -38,9 +61,10 @@ var myChart = new Chart(ctx, {
         scales: {
             yAxes: [{
                 ticks: {
-                    beginAtZero: true
+                    beginAtZero: true 
                 }
             }]
-        }
+        },
+        resposive: true
     }
 });
