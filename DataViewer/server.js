@@ -30,6 +30,21 @@ function refNoTweets() {
     });
 
 }
+function tweetbyday() {
+    con.query("SELECT Count(tid) AS 'noTw' FROM tweets WHERE right(created,4)  DATE_FORMAT(CURDATE(),'%Y') AND left(created,10)=DATE_FORMAT(CURDATE(),'%a %b %d')", function (err, rows) {
+        if (err) throw err;
+
+        console.log('Data received from Db:\n');
+        if (noTweets != rows[0].noTw) {
+
+            noTweets = rows[0].noTw;
+            io.emit('noTw', noTweets);
+        }
+
+
+    });
+
+}
 setInterval(refNoTweets, 5000)
 
 

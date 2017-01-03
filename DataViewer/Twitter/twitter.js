@@ -8,7 +8,7 @@ var mysql = require("mysql");
 //    res.end('Hello World\n');
 //}).listen(port);
 var con = mysql.createConnection({
-    host: "localhost",
+    host: "matthew95.co.uk",
     user: "root",
     password: "matt110395",
     database: "tweets",
@@ -48,7 +48,6 @@ var con = mysql.createConnection({
 
 "use strict";
 
-
 var Writable = require('stream').Writable,
  TwitterStream = require('twitter-stream-api'),
 
@@ -71,10 +70,11 @@ Output._write = function (obj, enc, next) {
     console.log(obj.lang,obj.id, obj.text);
     //var dat = [obj.id_str, obj.text];
     var dat = { tid: obj.id, created: obj.created_at, time_zone: obj.user.time_zone, tweet: obj.text, user: obj.user.name };
-    con.query('INSERT INTO tweets SET ?', dat, function (err, res) {
-        if (err) throw err;
-        next();
-    });
+    
+        con.query('INSERT INTO tweets SET ?', dat, function (err, res) {
+            if (err) throw err;
+            next();
+        });
     
 };
 
