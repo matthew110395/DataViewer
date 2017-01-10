@@ -12,7 +12,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>1f01147f-308d-4c03-9eab-f8c66f7e4758</ProjectGuid>
     <ProjectHome>.</ProjectHome>
-    <StartupFile>Twitter\twitter.js</StartupFile>
+    <StartupFile>server.js</StartupFile>
     <SearchPath>
     </SearchPath>
     <WorkingDirectory>.</WorkingDirectory>
@@ -30,11 +30,14 @@
     <DebugSymbols>true</DebugSymbols>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Public\js\config.js" />
     <Compile Include="Public\js\index.js" />
     <Compile Include="Public\js\jquery-3.1.1.js" />
     <Compile Include="server.js" />
     <Compile Include="Twitter\twitter.js" />
+    <Content Include="config.json" />
     <Content Include="package.json" />
+    <Content Include="Public\config.html" />
     <Content Include="Public\index.html" />
     <Content Include="README.md" />
   </ItemGroup>

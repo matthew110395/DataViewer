@@ -1,5 +1,11 @@
 ﻿var noTweets = 0
 var socket = io();
+var tweetByDayLab = [];
+var tweetByDayDat = [];
+
+$.getJSON("../../config.json", function (json) {
+    console.log(json); // this will show the info it in firebug console
+});
 
 setInterval(function () {
     var date = new Date();
@@ -13,6 +19,23 @@ socket.on('noTw', function (msg) {
     noTweets = msg;
 
     $('#noTwe').html('<h1>' + noTweets + '</h1>');
+
+});
+
+for (var i = 0;
+socket.on('myChart', function (msg) {
+    console.log(msg);
+    tweetByDayLab = msg.labs;
+    tweetByDayDat = msg.dat;
+    for (z in tweetByDayDat) {
+        myChart.data.datasets[0].data[z] = tweetByDayDat[z];
+
+    }
+    myChart.data.labels = tweetByDayLab;
+
+    //myChart.data.datasets[0].data = tweetByDayDat;
+
+    myChart.update();
 
 });
 
@@ -30,41 +53,48 @@ var divs = $('div[id^="chart"]').hide(),
 
 })();
 
-var ctx = document.getElementById("myChart");
-var myChart = new Chart(ctx, {
-    type: 'bar',
-    data: {
-        labels: ["Red", "Blue", "Yellow", "Green", "Purple", "Orange"],
-        datasets: [{
-            label: '# of Votes',
-            data: [12, 19, 3, 5, 2, 3],
-            backgroundColor: [
-                'rgba(255, 99, 132, 0.2)',
-                'rgba(54, 162, 235, 0.2)',
-                'rgba(255, 206, 86, 0.2)',
-                'rgba(75, 192, 192, 0.2)',
-                'rgba(153, 102, 255, 0.2)',
-                'rgba(255, 159, 64, 0.2)'
-            ],
-            borderColor: [
-                'rgba(255,99,132,1)',
-                'rgba(54, 162, 235, 1)',
-                'rgba(255, 206, 86, 1)',
-                'rgba(75, 192, 192, 1)',
-                'rgba(153, 102, 255, 1)',
-                'rgba(255, 159, 64, 1)'
-            ],
-            borderWidth: 1
-        }]
-    },
-    options: {
-        scales: {
-            yAxes: [{
-                ticks: {
-                    beginAtZero: true 
-                }
+var ctx;
+var myChart
+
+function barChart(name) {
+    ctx = document.getElementById("myChart");
+    myChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: tweetByDayLab,
+            datasets: [{
+                label: '# of Votes',
+                data: tweetByDayDat,
+                backgroundColor: [
+                    'rgba(255, 99, 132, 0.2)',
+                    'rgba(54, 162, 235, 0.2)',
+                    'rgba(255, 206, 86, 0.2)',
+                    'rgba(75, 192, 192, 0.2)',
+                    'rgba(153, 102, 255, 0.2)',
+                    'rgba(255, 159, 64, 0.2)'
+                ],
+                borderColor: [
+                    'rgba(255,99,132,1)',
+                    'rgba(54, 162, 235, 1)',
+                    'rgba(255, 206, 86, 1)',
+                    'rgba(75, 192, 192, 1)',
+                    'rgba(153, 102, 255, 1)',
+                    'rgba(255, 159, 64, 1)'
+                ],
+                borderWidth: 1
             }]
         },
-        resposive: true
-    }
-});
+        options: {
+            scales: {
+                yAxes: [{
+                    ticks: {
+                        beginAtZero: true
+                    }
+                }]
+            },
+            resposive: true
+        }
+    });
+}
+
+barChart("n");
