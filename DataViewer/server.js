@@ -12,7 +12,7 @@ var conf = require('./config.json');
 
 
 var con = mysql.createConnection({
-    host: "matthew95.co.uk",
+    host: "10.0.0.214",
     user: "root",
     password: "matt110395",
     database: "tweets",
@@ -40,59 +40,66 @@ function getWordAt(str, pos) {
 
 }
 var i = 0;
-setInterval(function () {
-    for (var i = 0; i < conf.charts.length; i++) {
+//setInterval(function () {
+var n = 0
+//for (var n = 0; n < conf.charts.length; n++) {
+while (n < conf.charts.length){
+    sdata = {};
+    tempstr = conf.charts[n].csql;
+    var firstAs = tempstr.indexOf("AS");
+    tempstr = tempstr.slice(firstAs + 2);
+    console.log(tempstr);
+    var secondAs = tempstr.indexOf("AS");
+    if (secondAs >= 0) {
+        secondAs = secondAs + firstAs + 2;
 
-        tempstr = conf.charts[i].csql;
-        var firstAs = tempstr.indexOf("AS");
-        tempstr = tempstr.slice(firstAs + 2);
-        console.log(tempstr);
-        var secondAs = tempstr.indexOf("AS");
-        if (secondAs => 0) {
-            secondAs = secondAs + firstAs + 2;
+        var lab = getWordAt(conf.charts[n].csql, firstAs + 3);
+        var dat = getWordAt(conf.charts[n].csql, secondAs + 3);
+    } else {
+        var lab = "";
+        var dat = getWordAt(conf.charts[n].csql, firstAs + 3);
+    }
+    if (lab.indexOf(',') > 0) {
+        lab = lab.substring(0, lab.length - 1);
+    }
+    if (dat.indexOf(',') > 0) {
+        dat = dat.substring(0, dat.length - 1);
+    }
+    con.query(conf.charts[n].csql, function (err, sdata) {
+        if (err) throw err;
+        console.log(sdata);
+    });
+        console.log('Data received from Db:\n');
+        console.log(sdata);
+        labels = [];
+        data = [];
 
-            var lab = getWordAt(conf.charts[i].csql, firstAs + 3);
-            var dat = getWordAt(conf.charts[i].csql, secondAs + 3);
-        } else {
+        for (j in sdata) {
+            //var obj = [];
+            //for (var key in sdata[i]) {
+            //    obj.push(sdata[i].
+            //}
 
-            var dat = getWordAt(conf.charts[i].csql, secondAs + 3);
-        }
-        if (lab.indexOf(',') > 0) {
-            lab = lab.substring(0, lab.length - 1);
-        }
-        if (dat.indexOf(',') > 0) {
-            dat = dat.substring(0, dat.length - 1);
-        }
-        con.query(conf.charts[i].csql, function (err, sdata) {
-            if (err) throw err;
-
-            console.log('Data received from Db:\n');
-            console.log(sdata);
-            labels = [];
-            data = [];
-
-            for (j in sdata) {
-                //var obj = [];
-                //for (var key in sdata[i]) {
-                //    obj.push(sdata[i].
-                //}
-
-
+            if (secondAs >= 0) {
                 labels.push(sdata[j][lab]);
                 data.push(sdata[j][dat]);
+            } else {
+                data.push(sdata[j][dat]);
             }
-            console.log(labels);
-            console.log(data);
-            send = {
-                labs: labels,
-                dat: data
-            };
+        
+        console.log(labels);
+        console.log(data);
+        send = {
+            labs: labels,
+            dat: data
+        };
 
-            io.emit(conf.charts[i].name, send);
+        io.emit(conf.charts[n].name, send);
 
-        });
     }
-    }, 5000);
+    n++;
+}
+//}, 5000);
 
 
 function refNoTweets() {
@@ -145,9 +152,18 @@ io.on('connection', function (socket) {
 
         console.log(data);
         updateJSON(data);
+        updateJS(data)
 
     });
 });
+
+function updateJS(data) {
+    name = data.name;
+    text = "socket.on('" + name+"', function (msg) {no = msg; $('#"+ name + "').html('<h1>' + no + '</h1>');});";
+    fs.writeFile('./Public/js/index.js', text, function (err) {
+        console.log(err);
+    });
+}
 
 function updateJSON(data) {
     //$.getJSON("/config.json", function (data) {

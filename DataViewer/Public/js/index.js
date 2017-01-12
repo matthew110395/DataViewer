@@ -22,7 +22,7 @@ socket.on('noTw', function (msg) {
 
 });
 
-for (var i = 0;
+
 socket.on('myChart', function (msg) {
     console.log(msg);
     tweetByDayLab = msg.labs;
