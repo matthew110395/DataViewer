@@ -3,7 +3,7 @@ var socket = io();
 var tweetByDayLab = [];
 var tweetByDayDat = [];
 
-$.getJSON("../../config.json", function (json) {
+$.getJSON("http://localhost:8000/config.json", function (json) {
     console.log(json); // this will show the info it in firebug console
 });
 
@@ -15,8 +15,8 @@ setInterval(function () {
     $('#time').html(time);
 }, 1000);
 
-socket.on('noTw', function (msg) {
-    noTweets = msg;
+socket.on('noTweetsDay', function (msg) {
+    noTweets = msg.noTw;
 
     $('#noTwe').html('<h1>' + noTweets + '</h1>');
 
@@ -98,3 +98,4 @@ function barChart(name) {
 }
 
 barChart("n");
+socket.on('MSTEST', function (msg) {no = msg; $('#MSTEST').html('<h1>' + no + '</h1>');});

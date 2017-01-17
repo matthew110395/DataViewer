@@ -35,7 +35,7 @@
     <Compile Include="Public\js\jquery-3.1.1.js" />
     <Compile Include="server.js" />
     <Compile Include="Twitter\twitter.js" />
-    <Content Include="config.json" />
+    <Content Include="Public\config.json" />
     <Content Include="package.json" />
     <Content Include="Public\config.html" />
     <Content Include="Public\index.html" />
