@@ -5,7 +5,23 @@ var tweetByDayDat = [];
 
 $.getJSON("http://localhost:8000/config.json", function (json) {
     console.log(json); // this will show the info it in firebug console
+    for (x in json.charts) {
+        console.log(json.charts[x]);
+    }
 });
+
+function nextDiv() {
+    var i = 0;
+    $('.display').each(function () {
+        i++;
+        $(this).val(i);
+  
+    });
+    i = i + 1;
+    var next = "chart" + i;
+
+    return next;
+}
 
 setInterval(function () {
     var date = new Date();
@@ -16,7 +32,7 @@ setInterval(function () {
 }, 1000);
 
 socket.on('noTweetsDay', function (msg) {
-    noTweets = msg.noTw;
+    noTweets = msg.dat[0];
 
     $('#noTwe').html('<h1>' + noTweets + '</h1>');
 
@@ -40,7 +56,8 @@ socket.on('myChart', function (msg) {
 });
 
 //Rotate through divs which have an id beinging with chart
-var divs = $('div[id^="chart"]').hide(),
+//var divs = $('div[id^="chart"]').hide(),
+var divs = $('.display').hide(),
     i = 0;
 
 (function cycle() {
@@ -53,18 +70,20 @@ var divs = $('div[id^="chart"]').hide(),
 
 })();
 
-var ctx;
-var myChart
 
-function barChart(name) {
-    ctx = document.getElementById("myChart");
-    myChart = new Chart(ctx, {
+var myChart;
+var test;
+
+function barChart(name,lab,dat) {
+    var ctx;
+    ctx = document.getElementById(name);
+    window[name]  =  new Chart(ctx, {
         type: 'bar',
         data: {
-            labels: tweetByDayLab,
+            labels: lab,
             datasets: [{
                 label: '# of Votes',
-                data: tweetByDayDat,
+                data: dat,
                 backgroundColor: [
                     'rgba(255, 99, 132, 0.2)',
                     'rgba(54, 162, 235, 0.2)',
@@ -95,7 +114,80 @@ function barChart(name) {
             resposive: true
         }
     });
+    
 }
 
-barChart("n");
-socket.on('MSTEST', function (msg) {no = msg; $('#MSTEST').html('<h1>' + no + '</h1>');});
+function lineChart(name, lab, dat) {
+    var ctx;
+    ctx = document.getElementById(name);
+    window[name] = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: lab,
+            datasets: [{
+                label: "tweets",
+                fill: false,
+                lineTension: 0.1,
+                backgroundColor: "rgba(75,192,192,0.4)",
+                borderColor: "rgba(75,192,192,1)",
+                borderCapStyle: 'butt',
+                borderDash: [],
+                borderDashOffset: 0.0,
+                borderJoinStyle: 'miter',
+                pointBorderColor: "rgba(75,192,192,1)",
+                pointBackgroundColor: "#fff",
+                pointBorderWidth: 1,
+                pointHoverRadius: 5,
+                pointHoverBackgroundColor: "rgba(75,192,192,1)",
+                pointHoverBorderColor: "rgba(220,220,220,1)",
+                pointHoverBorderWidth: 2,
+                pointRadius: 1,
+                pointHitRadius: 10,
+                data: dat,
+                spanGaps: false,
+            }]
+        },
+        options: {
+            scales: {
+                yAxes: [{
+                    ticks: {
+                        beginAtZero: true
+                    }
+                }]
+            },
+            resposive: true
+        }
+    });
+
+}
+
+barChart("myChart", tweetByDayLab, tweetByDayDat);
+
+
+socket.on('twpd', function (msg) {no = msg.dat; $('#twpd').html('<h1>' + no + '</h1>');});var tstsdat = [];
+var tstslab = [];
+barChart('tsts',tstslab,tstsdat);
+socket.on('tsts', function (msg) {
+tstslab = msg.labs;
+tstsdat = msg.dat;
+for (z in tstsdat) {
+tsts.data.datasets[0].data[z] = tstsdat[z];
+} 
+tsts.data.labels = tstslab;
+tsts.update();
+}); 
+
+var LineTestdat = [];
+var LineTestlab = [];
+lineChart('LineTest',LineTestlab,LineTestdat);
+socket.on('LineTest', function (msg) {
+LineTestlab = msg.labs;
+LineTestdat = msg.dat;
+for (z in LineTestdat) {
+LineTest.data.datasets[0].data[z] = LineTestdat[z];
+} 
+LineTest.data.labels = LineTestlab;
+LineTest.update();
+}); 
+
+socket.on('tttt', function (msg) {no = msg; $('#tttt').html('<h1>' + no + '</h1>');});

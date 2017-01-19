@@ -7,8 +7,11 @@ var io = require('socket.io')(http);
 var mysql = require("mysql");
 var fs = require('fs');
 var conf = require('./Public/config.json');
+var jsdom = require("jsdom");
+
 
 var Q = require('q');
+
 
 
 var con = mysql.createConnection({
@@ -126,9 +129,9 @@ setInterval(function () {
             };
 
 
-            console.log(values.cname[0], send);
+            console.log(values.cname, send);
 
-            io.emit(values.cname[0], send);
+            io.emit(values.cname, send);
         });
         
         //con.query(conf.charts[n].csql, function (err, datar, fields) {
@@ -227,22 +230,61 @@ function tweetbyday() {
 io.on('connection', function (socket) {
     console.log("TEST");
     io.emit('temp', 'test1');
-    socket.on('test', function (data) {
+    socket.on('append', function (data) {
 
         console.log(data);
         updateJSON(data);
-        updateJS(data)
+        updateJS(data);
+        updateHTML(data);
 
     });
 });
 
 function updateJS(data) {
     name = data.name;
-    text = "\nsocket.on('" + name + "', function (msg) {no = msg; $('#" + name + "').html('<h1>' + no + '</h1>');});\n";
+    if (data.type === "Text") {
+        text = "\nsocket.on('" + name + "', function (msg) {no = msg; $('#" + name + "').html('<h1>' + no + '</h1>');});\n";
+    } else if(data.type === "Bar") {
+        text = "\nvar " + name + "dat = [];\nvar " + name + "lab = [];\nbarChart('" + name + "'," + name + "lab," + name + "dat);\nsocket.on('" + name + "', function (msg) {\n"+name+"lab = msg.labs;\n"+name+"dat = msg.dat;\nfor (z in "+name+"dat) {\n"+name+".data.datasets[0].data[z] = "+name+"dat[z];\n} \n"+name+".data.labels = "+name+"lab;\n"+name+".update();\n}); \n";
+    }
+    else if (data.type === "Line") {
+        text = "\nvar " + name + "dat = [];\nvar " + name + "lab = [];\nlineChart('" + name + "'," + name + "lab," + name + "dat);\nsocket.on('" + name + "', function (msg) {\n" + name + "lab = msg.labs;\n" + name + "dat = msg.dat;\nfor (z in " + name + "dat) {\n" + name + ".data.datasets[0].data[z] = " + name + "dat[z];\n} \n" + name + ".data.labels = " + name + "lab;\n" + name + ".update();\n}); \n";
+    }
     fs.appendFile('./Public/js/index.js', text, function (err) {
         console.log(err);
     });
 }
+
+
+function updateHTML(data) {
+    name = data.name;
+    //text = "\n<div class='display'><h1 id='" + name + "'>0</h1></div>\n";
+    //fs.appendFile('./Public/js/index.js', text, function (err) {
+    //    console.log(err);
+    //});
+
+
+
+    fs.readFile('./Public/index.html', 'utf8', function (error, data) {
+        jsdom.env(data, [], function (errors, window) {
+            var $ = require('jquery')(window);
+            $("#slide").each(function () {
+                var content = $(this);
+                if (data.type === "Text") {
+                    $(this).append("\n<div class='display'><h1 id='" + name + "'>0</h1></div>\n ");
+                } else {
+                    $(this).append("\n<div class='display'><canvas id= "+name+" width= '400' height='400' ></canvas></div>\n ");
+                } 
+            });
+
+            fs.writeFile('./Public/index.html', window.document.documentElement.outerHTML,
+                function (error) {
+                    if (error) throw error;
+                });
+        });
+    });
+}
+
 
 function updateJSON(data) {
     //$.getJSON("/config.json", function (data) {

@@ -1,24 +1,28 @@
-﻿<!DOCTYPE html>
-
-<html xmlns="http://www.w3.org/1999/xhtml">
-<head>
-    <meta charset="utf-8" />
+<html xmlns="http://www.w3.org/1999/xhtml"><head>
+    <meta charset="utf-8">
     <title></title>
 </head>
-<body>    
+<body>   
+     
     <h5 id="time"></h5>
-    <div id="chart1">
-    <canvas id="myChart" width="400" height="400"></canvas>
+    <div id="slide">
+        <div class="display">
+            <canvas id="myChart" width="400" height="400"></canvas>
         </div>
-    <div id="chart2">
-    <h3>Number of Tweets Today</h3>
-<h1 id="noTwe">0</h1>    </div>
-    <div id="chart3">
-        <h1>Chart3</h1>
-    </div>
-    <div id="chart4">
-        <h1>Chart4</h1>
-    </div>
+        <div class="display">
+            <h3>Number of Tweets Today</h3>
+            <h1 id="noTwe">0</h1>
+        </div>
+        <div class="display">
+            <h1>Chart3</h1>
+        </div>
+        <div class="display">
+            <h1>Chart4</h1>
+        </div>
+    
+<div class="display"><h1 id="twpd">0</h1></div>
+        <div class="display"><canvas id="tsts" width="400" height="400"></canvas></div>
+        <div class="display"><canvas id="LineTest" width="400" height="400"></canvas></div>
 
 
 
@@ -28,5 +32,9 @@
     <script src="http://localhost:8000/socket.io/socket.io.js"></script>
     <script src="js/jquery-3.1.1.js"></script>
     <script src="js/index.js"></script>
-</body>
-</html>
+
+
+
+
+<div class="display"><canvas id="tttt" width="400" height="400"></canvas></div>
+ </div></body></html>

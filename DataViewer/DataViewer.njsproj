@@ -30,14 +30,20 @@
     <DebugSymbols>true</DebugSymbols>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Public\js\ace.js" />
     <Compile Include="Public\js\config.js" />
     <Compile Include="Public\js\index.js" />
     <Compile Include="Public\js\jquery-3.1.1.js" />
+    <Compile Include="Public\js\mode-javascript.js" />
+    <Compile Include="Public\js\mode-mysql.js" />
+    <Compile Include="Public\js\theme-monokai.js" />
+    <Compile Include="Public\js\worker-javascript.js" />
     <Compile Include="server.js" />
     <Compile Include="Twitter\twitter.js" />
     <Content Include="Public\config.json" />
     <Content Include="package.json" />
     <Content Include="Public\config.html" />
+    <Content Include="Public\index2.html" />
     <Content Include="Public\index.html" />
     <Content Include="README.md" />
   </ItemGroup>
