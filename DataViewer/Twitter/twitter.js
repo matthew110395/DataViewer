@@ -1,12 +1,15 @@
-﻿//var http = require('http');
+﻿
 var mysql = require("mysql");
-//var Writable = require('stream').Writable
+var eclairjs = require("eclairjs");
+var SQLContext = require('eclairjs/client/lib/sql/SQLContext');
 
-//var port = process.env.port || 8000;
-//http.createServer(function (req, res) {
-//    res.writeHead(200, { 'Content-Type': 'text/plain' });
-//    res.end('Hello World\n');
-//}).listen(port);
+var spark = new eclairjs();
+var sc = new spark.SparkContext("local[*]", "Naieve Bayes");
+
+var sqlContext = new SQLContext(sc);
+var rdd = sc.textFile('mlData1.csv');
+
+
 var con = mysql.createConnection({
     host: "matthew95.co.uk",
     user: "root",
@@ -60,6 +63,7 @@ var Writable = require('stream').Writable,
     token: "1015860535-pZmtAxWyBZJSYwXwat6StooPRtiIxOnUP8oVDI7",
     token_secret: "4fwNyRaqtbzTGCWq6ZqlifJONftz11IZdulgvipXIDOiy"
 };
+
 
 
 
