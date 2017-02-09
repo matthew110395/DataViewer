@@ -12,7 +12,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>1f01147f-308d-4c03-9eab-f8c66f7e4758</ProjectGuid>
     <ProjectHome>.</ProjectHome>
-    <StartupFile>Twitter\twitter.js</StartupFile>
+    <StartupFile>server.js</StartupFile>
     <SearchPath>
     </SearchPath>
     <WorkingDirectory>.</WorkingDirectory>
