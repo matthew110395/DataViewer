@@ -15,7 +15,7 @@ var Q = require('q');
 
 
 var con = mysql.createConnection({
-    host: "10.0.0.214",
+    host: "matthew95.co.uk",
     user: "root",
     password: "matt110395",
     database: "tweets",
@@ -246,6 +246,9 @@ function updateJS(data) {
         text = "\nsocket.on('" + name + "', function (msg) {no = msg; $('#" + name + "').html('<h1>' + no + '</h1>');});\n";
     } else if(data.type === "Bar") {
         text = "\nvar " + name + "dat = [];\nvar " + name + "lab = [];\nbarChart('" + name + "'," + name + "lab," + name + "dat);\nsocket.on('" + name + "', function (msg) {\n"+name+"lab = msg.labs;\n"+name+"dat = msg.dat;\nfor (z in "+name+"dat) {\n"+name+".data.datasets[0].data[z] = "+name+"dat[z];\n} \n"+name+".data.labels = "+name+"lab;\n"+name+".update();\n}); \n";
+    }
+     else if (data.type === "Polar") {
+    text = "\nvar " + name + "dat = [];\nvar " + name + "lab = [];\npolarChart('" + name + "'," + name + "lab," + name + "dat);\nsocket.on('" + name + "', function (msg) {\n" + name + "lab = msg.labs;\n" + name + "dat = msg.dat;\nfor (z in " + name + "dat) {\n" + name + ".data.datasets[0].data[z] = " + name + "dat[z];\n} \n" + name + ".data.labels = " + name + "lab;\n" + name + ".update();\n}); \n";
     }
     else if (data.type === "Line") {
         text = "\nvar " + name + "dat = [];\nvar " + name + "lab = [];\nlineChart('" + name + "'," + name + "lab," + name + "dat);\nsocket.on('" + name + "', function (msg) {\n" + name + "lab = msg.labs;\n" + name + "dat = msg.dat;\nfor (z in " + name + "dat) {\n" + name + ".data.datasets[0].data[z] = " + name + "dat[z];\n} \n" + name + ".data.labels = " + name + "lab;\n" + name + ".update();\n}); \n";

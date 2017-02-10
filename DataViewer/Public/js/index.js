@@ -74,10 +74,10 @@ var divs = $('.display').hide(),
 var myChart;
 var test;
 
-function barChart(name,lab,dat) {
+function barChart(name, lab, dat) {
     var ctx;
     ctx = document.getElementById(name);
-    window[name]  =  new Chart(ctx, {
+    window[name] = new Chart(ctx, {
         type: 'bar',
         data: {
             labels: lab,
@@ -104,13 +104,45 @@ function barChart(name,lab,dat) {
             }]
         },
         options: {
-            scales: {
-                yAxes: [{
-                    ticks: {
-                        beginAtZero: true
-                    }
-                }]
-            },
+
+            resposive: true
+        }
+    });
+
+}
+
+
+function polarChart(name,lab,dat) {
+    var ctx;
+    ctx = document.getElementById(name);
+    window[name]  =  new Chart(ctx, {
+        type: 'polarArea',
+        data: {
+            labels: lab,
+            datasets: [{
+                label: 'Tweets',
+                data: dat,
+                backgroundColor: [
+                    'rgba(255, 99, 132, 0.2)',
+                    'rgba(54, 162, 235, 0.2)',
+                    'rgba(255, 206, 86, 0.2)',
+                    'rgba(75, 192, 192, 0.2)',
+                    'rgba(153, 102, 255, 0.2)',
+                    'rgba(255, 159, 64, 0.2)'
+                ],
+                borderColor: [
+                    'rgba(255,99,132,1)',
+                    'rgba(54, 162, 235, 1)',
+                    'rgba(255, 206, 86, 1)',
+                    'rgba(75, 192, 192, 1)',
+                    'rgba(153, 102, 255, 1)',
+                    'rgba(255, 159, 64, 1)'
+                ],
+                borderWidth: 1
+            }]
+        },
+        options: {
+            
             resposive: true
         }
     });
@@ -125,7 +157,7 @@ function lineChart(name, lab, dat) {
         data: {
             labels: lab,
             datasets: [{
-                label: "tweets",
+                label: "Tweets",
                 fill: false,
                 lineTension: 0.1,
                 backgroundColor: "rgba(75,192,192,0.4)",
@@ -191,3 +223,28 @@ LineTest.update();
 }); 
 
 socket.on('tttt', function (msg) {no = msg; $('#tttt').html('<h1>' + no + '</h1>');});
+
+var BlogNonBlogdat = [];
+var BlogNonBloglab = [];
+barChart('BlogNonBlog',BlogNonBloglab,BlogNonBlogdat);
+socket.on('BlogNonBlog', function (msg) {
+BlogNonBloglab = msg.labs;
+BlogNonBlogdat = msg.dat;
+for (z in BlogNonBlogdat) {
+BlogNonBlog.data.datasets[0].data[z] = BlogNonBlogdat[z];
+} 
+BlogNonBlog.data.labels = BlogNonBloglab;
+BlogNonBlog.update();
+}); 
+var MSTest4dat = [];
+var MSTest4lab = [];
+polarChart('MSTest4',MSTest4lab,MSTest4dat);
+socket.on('MSTest4', function (msg) {
+MSTest4lab = msg.labs;
+MSTest4dat = msg.dat;
+for (z in MSTest4dat) {
+MSTest4.data.datasets[0].data[z] = MSTest4dat[z];
+} 
+MSTest4.data.labels = MSTest4lab;
+MSTest4.update();
+}); 
