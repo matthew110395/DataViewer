@@ -8,6 +8,8 @@ var mysql = require("mysql");
 var fs = require('fs');
 var conf = require('./Public/config.json');
 var jsdom = require("jsdom");
+var condense = require('gulp-condense');
+var gulp = require('gulp');
 
 
 var Q = require('q');
@@ -241,7 +243,7 @@ io.on('connection', function (socket) {
     socket.on('remove', function (data) {
 
         remHTML(data.name);
-        //remJSON(data.name);
+        remJSON(data.name,data.type,data.sql);
         remJS(data.name, data.type);
 
     });
@@ -285,12 +287,13 @@ function remJS(name,type) {
     //Look at add and remove, dependant on type
     var text = [];
     if (type === "Text") {
-        text = "\nsocket.on('" + name + "', function (msg) {no = msg; $('#" + name + "').html('<h1>' + no + '</h1>');});\n";
+       
+        text.push("socket.on('" + name + "', function (msg) {no = msg; $('#" + name + "').html('< h1 > ' + no + '</h1 >');});");
     } else if (type === "Bar") {
         text.push('var ' + name + 'dat = [];');
         text.push('var ' + name + 'lab = [];');
-        text.push('barChart("' + name + '",' + name + 'lab,' + name + 'dat);');
-        text.push('socket.on("' + name + '", function (msg) {');
+        text.push("barChart('" + name + "'," + name + "lab," + name + "dat);");
+        text.push("socket.on('" + name + "', function (msg) {");
         text.push(name + 'lab = msg.labs;');
         text.push(name + 'dat = msg.dat;');
         text.push('for (z in ' + name + 'dat) {');
@@ -306,10 +309,31 @@ function remJS(name,type) {
         //\nbarChart("' + name + '", ' + name + 'lab, ' + name + 'dat); \nsocket.on("' + name + '", function (msg) { \n' + name + 'lab = msg.labs; \n' + name + 'dat = msg.dat; \nfor(z in ' + name + 'dat) {\n' + name + '.data.datasets[0].data[z] = ' + name + 'dat[z]; \n } \n' + name + '.data.labels = ' + name + 'lab; \n' + name + '.update(); \n }); ';
     }
     else if (type === "Polar") {
-        text = "\nvar " + name + "dat = [];\nvar " + name + "lab = [];\npolarChart('" + name + "'," + name + "lab," + name + "dat);\nsocket.on('" + name + "', function (msg) {\n" + name + "lab = msg.labs;\n" + name + "dat = msg.dat;\nfor (z in " + name + "dat) {\n" + name + ".data.datasets[0].data[z] = " + name + "dat[z];\n} \n" + name + ".data.labels = " + name + "lab;\n" + name + ".update();\n}); \n";
+        text.push('var ' + name + 'dat = [];');
+        text.push('var ' + name + 'lab = [];');
+        text.push("polarChart('" + name + "'," + name + "lab," + name + "dat);");
+        text.push("socket.on('" + name + "', function (msg) {");
+        text.push(name + 'lab = msg.labs;');
+        text.push(name + 'dat = msg.dat;');
+        text.push('for (z in ' + name + 'dat) {');
+        text.push(name + '.data.datasets[0].data[z] = ' + name + 'dat[z];}');
+        text.push(name + '.data.labels = ' + name + 'lab;');
+        text.push(name + '.update();});');
+
+        //text = "\nvar " + name + "dat = [];\nvar " + name + "lab = [];\npolarChart('" + name + "'," + name + "lab," + name + "dat);\nsocket.on('" + name + "', function (msg) {\n" + name + "lab = msg.labs;\n" + name + "dat = msg.dat;\nfor (z in " + name + "dat) {\n" + name + ".data.datasets[0].data[z] = " + name + "dat[z];\n} \n" + name + ".data.labels = " + name + "lab;\n" + name + ".update();\n}); \n";
     }
     else if (type === "Line") {
-        text = "\nvar " + name + "dat = [];\nvar " + name + "lab = [];\nlineChart('" + name + "'," + name + "lab," + name + "dat);\nsocket.on('" + name + "', function (msg) {\n" + name + "lab = msg.labs;\n" + name + "dat = msg.dat;\nfor (z in " + name + "dat) {\n" + name + ".data.datasets[0].data[z] = " + name + "dat[z];\n} \n" + name + ".data.labels = " + name + "lab;\n" + name + ".update();\n}); \n";
+        text.push('var ' + name + 'dat = [];');
+        text.push('var ' + name + 'lab = [];');
+        text.push("lineChart('" + name + "'," + name + "lab," + name + "dat);");
+        text.push("socket.on('" + name + "', function (msg) {");
+        text.push(name + 'lab = msg.labs;');
+        text.push(name + 'dat = msg.dat;');
+        text.push('for (z in ' + name + 'dat) {');
+        text.push(name + '.data.datasets[0].data[z] = ' + name + 'dat[z];}');
+        text.push(name + '.data.labels = ' + name + 'lab;');
+        text.push(name + '.update();});');
+        //text = "\nvar " + name + "dat = [];\nvar " + name + "lab = [];\nlineChart('" + name + "'," + name + "lab," + name + "dat);\nsocket.on('" + name + "', function (msg) {\n" + name + "lab = msg.labs;\n" + name + "dat = msg.dat;\nfor (z in " + name + "dat) {\n" + name + ".data.datasets[0].data[z] = " + name + "dat[z];\n} \n" + name + ".data.labels = " + name + "lab;\n" + name + ".update();\n}); \n";
     }
 
 
@@ -319,7 +343,9 @@ function remJS(name,type) {
         for (x in text) {
             data = data.replace(text[x], '');
         }
-        data = data.replace(/\n\s*\n\s*\n/g, '\n\n');
+        //data = data.replace(new RegExp('(\n){3,}', 'gim'), '\n
+        data = data.replace(/^\s+|\s+$/g, '');
+
 
 
         
@@ -330,6 +356,11 @@ function remJS(name,type) {
                     if (error) throw error;
                 });
         
+    });
+    gulp.task('default', function () {
+        return gulp.src('./Public/js/index.js')
+            .pipe(condense())
+            .pipe(gulp.dest('./Public/js/'));
     });
     io.emit('reload');
 }
@@ -345,29 +376,48 @@ function remJS(name,type) {
     });
     return arr;
 }
-function remJSON(data) {
+function remJSON(name,type) {
     //$.getJSON("/config.json", function (data) {
     //    data.charts.push(data);
     //});
 
-    var obj = require('./Public/config.json');
-    arr = obj.charts;
-    //obj.charts = remarr(obj.charts, 'name', data);
-    jsdom.env(data, [], function (errors, window) {
-        var $ = require('jquery')(window);
-        var array = $.map(arr, function (v, i) {
-            return v['name'] === data ? null : v;
-        });
-        arr.length = 0; //clear original array
-        arr.push.apply(arr, array); //push all elements except the one we want to delete
+    for (c in conf.charts) {
+        if (conf.charts[c].name == name) {
+            var sql = conf.charts[c].csql;
+        }
+    
+        }
+    var text = [];
+
+
+    text.push('{"name":"' + name + '","type":"' + type + '","csql":"' + sql + '"},');
+    text.push(',{"name":"' + name + '","type":"' + type + '","csql":"' + sql + '"}');
+    text.push(',{"csql":"' + sql + '","name":"' + name + '","type":"' + type + '"}');
+    text.push('{"csql":"' + sql + '","name":"' + name + '","type":"' + type + '"},');
+
+
+
+    fs.readFile('./Public/config.json', 'utf8', function (error, data) {
+        for (x in text) {
+            data = data.replace(text[x], '');
+        }
+        //data = data.replace(new RegExp('(\n){3,}', 'gim'), '\n');
+
+
+
+        console.log(data);
+        //console.log($('#' + dname).closest("canvas"));
+        fs.writeFile('./Public/config.json', data,
+            function (error) {
+                if (error) throw error;
+            });
 
     });
-    obj.charts = arr;
-    console.log(obj);
-    fs.writeFile('./Public/config.json', JSON.stringify(obj), function (err) {
-        console.log(err);
-    });
-}
+    io.emit('reload');
+    }
+
+   
+
 
 function updateHTML(data) {
     name = data.name;

@@ -1,4 +1,4 @@
-﻿var noTweets = 0
+var noTweets = 0
 var socket = io();
 var tweetByDayLab = [];
 var tweetByDayDat = [];
@@ -34,9 +34,7 @@ setInterval(function () {
 socket.on('noTweetsDay', function (msg) {
     noTweets = msg.dat[0];
 
-    $('#noTwe').html('<h1>' + noTweets + '</h1>');
-
-});
+    $('#noTwe').html('<h1>' + noTweets + '</h1>');});
 
 
 socket.on('myChart', function (msg) {
@@ -44,16 +42,12 @@ socket.on('myChart', function (msg) {
     tweetByDayLab = msg.labs;
     tweetByDayDat = msg.dat;
     for (z in tweetByDayDat) {
-        myChart.data.datasets[0].data[z] = tweetByDayDat[z];
-
-    }
+        myChart.data.datasets[0].data[z] = tweetByDayDat[z]; }
     myChart.data.labels = tweetByDayLab;
 
     //myChart.data.datasets[0].data = tweetByDayDat;
 
-    myChart.update();
-
-});
+    myChart.update();});
 
 //Rotate through divs which have an id beinging with chart
 //var divs = $('div[id^="chart"]').hide(),
@@ -203,35 +197,6 @@ socket.on('tsts', function (msg) {
     tstslab = msg.labs;
     tstsdat = msg.dat;
     for (z in tstsdat) {
-        tsts.data.datasets[0].data[z] = tstsdat[z];
-    }
+        tsts.data.datasets[0].data[z] = tstsdat[z];}
     tsts.data.labels = tstslab;
-    tsts.update();
-});
-
-var LineTestdat = [];
-var LineTestlab = [];
-lineChart('LineTest', LineTestlab, LineTestdat);
-socket.on('LineTest', function (msg) {
-    LineTestlab = msg.labs;
-    LineTestdat = msg.dat;
-    for (z in LineTestdat) {
-        LineTest.data.datasets[0].data[z] = LineTestdat[z];
-    }
-    LineTest.data.labels = LineTestlab;
-    LineTest.update();
-});
-
-var MSTest4dat = [];
-var MSTest4lab = [];
-polarChart('MSTest4', MSTest4lab, MSTest4dat);
-socket.on('MSTest4', function (msg) {
-    MSTest4lab = msg.labs;
-    MSTest4dat = msg.dat;
-    for (z in MSTest4dat) {
-        MSTest4.data.datasets[0].data[z] = MSTest4dat[z];
-    }
-    MSTest4.data.labels = MSTest4lab;
-    MSTest4.update();
-}); 
-
+    tsts.update();});
