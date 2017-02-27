@@ -18,35 +18,51 @@
         width:0px;
 	}
     </style>
+
+    <link href="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css" rel="stylesheet" />
+    <link href="http://cdnjs.cloudflare.com/ajax/libs/jquery.bootstrapvalidator/0.5.0/css/bootstrapValidator.min.css" rel="stylesheet" />
 </head>
 <body>
-    <form id="newChart">
+    
+        <form id="newChart">
+            <div class="form-group">
+                <label for="cname">Chart Name:</label><input type="text" id="cname" name="cname" class="form-control" /><p id="errName"></p>
+            </div>
+    <div class="form-group">
+        <label for="type">Type:</label><select id="type" class="form-control">
+                <option>Bar</option>
+                <option>Line</option>
+                <option>Pie</option>
+                <option>Text</option>
+                <option>Polar</option>
+            </select>
+        </div>
+    <div class="form-group">
+        <label for="sql">SQL:</label>
+            <textarea name="sql" id="sql" cols="40" rows="5" class="form-control"></textarea>
+            <!--<input type="text" id="sql" name="sql"  />-->
+
+            <!--<div id="editor" class="form-control"></div>-->
+          
+           >
+            <!--<textarea id="sql" rows="6"></textarea>-->
+        </div>
+            <button type="button" id="submit" onclick="addTo()" class="btn btn-default">Add</button>
+        </form>
         
-        <p>Chart Name: </p><input type="text" id="cname" />
-         
-        <p>Type: </p><select id="type">
-        <option>Bar</option>
-        <option>Line</option>
-        <option>Pie</option>
-        <option>Text</option>
-        <option>Polar</option>
-        </select>
-       
-        <div id="editor"></div>
-            
-        <textarea id="sql" rows="6"></textarea>
+        <div id="accordian">
 
-        <button type="button" id="submit" onclick="addTo()">Add</button>
-    </form>
 
-    <div id="accordian">
+        </div>
+        <script src="js/ace.js"></script>
+        <script src="http://localhost:8000/socket.io/socket.io.js"></script>
+        <script src="js/jquery-3.1.1.js"></script>
+        <script src="js/jquery-ui.js"></script>
+        <script src="js/config.js"></script>
+        <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+        <script src="http://cdnjs.cloudflare.com/ajax/libs/bootstrap-validator/0.4.5/js/bootstrapvalidator.min.js"></script>
+        <script src="js/validator.js"></script>
 
-        
-    </div>
-    <script src="js/ace.js"></script>
-    <script src="http://localhost:8000/socket.io/socket.io.js"></script>
-    <script src="js/jquery-3.1.1.js"></script>
-    <script src="js/jquery-ui.js"></script>
-    <script src="js/config.js"></script>
 </body>
 </html>

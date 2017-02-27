@@ -238,6 +238,13 @@ io.on('connection', function (socket) {
         updateHTML(data);
 
     });
+    socket.on('remove', function (data) {
+
+        remHTML(data.name);
+        //remJSON(data.name);
+        remJS(data.name, data.type);
+
+    });
 });
 
 function updateJS(data) {
@@ -245,19 +252,122 @@ function updateJS(data) {
     if (data.type === "Text") {
         text = "\nsocket.on('" + name + "', function (msg) {no = msg; $('#" + name + "').html('<h1>' + no + '</h1>');});\n";
     } else if(data.type === "Bar") {
-        text = "\nvar " + name + "dat = [];\nvar " + name + "lab = [];\nbarChart('" + name + "'," + name + "lab," + name + "dat);\nsocket.on('" + name + "', function (msg) {\n"+name+"lab = msg.labs;\n"+name+"dat = msg.dat;\nfor (z in "+name+"dat) {\n"+name+".data.datasets[0].data[z] = "+name+"dat[z];\n} \n"+name+".data.labels = "+name+"lab;\n"+name+".update();\n}); \n";
+        text = "\nvar " + name + "dat = [];\nvar " + name + "lab = [];\nbarChart('" + name + "'," + name + "lab," + name + "dat);\nsocket.on('" + name + "', function (msg) {\n"+name+"lab = msg.labs;\n"+name+"dat = msg.dat;\nfor (z in "+name+"dat) {\n"+name+".data.datasets[0].data[z] = "+name+"dat[z];} \n"+name+".data.labels = "+name+"lab;\n"+name+".update();}); \n";
     }
      else if (data.type === "Polar") {
-    text = "\nvar " + name + "dat = [];\nvar " + name + "lab = [];\npolarChart('" + name + "'," + name + "lab," + name + "dat);\nsocket.on('" + name + "', function (msg) {\n" + name + "lab = msg.labs;\n" + name + "dat = msg.dat;\nfor (z in " + name + "dat) {\n" + name + ".data.datasets[0].data[z] = " + name + "dat[z];\n} \n" + name + ".data.labels = " + name + "lab;\n" + name + ".update();\n}); \n";
+    text = "\nvar " + name + "dat = [];\nvar " + name + "lab = [];\npolarChart('" + name + "'," + name + "lab," + name + "dat);\nsocket.on('" + name + "', function (msg) {\n" + name + "lab = msg.labs;\n" + name + "dat = msg.dat;\nfor (z in " + name + "dat) {\n" + name + ".data.datasets[0].data[z] = " + name + "dat[z];} \n" + name + ".data.labels = " + name + "lab;\n" + name + ".update();}); \n";
     }
     else if (data.type === "Line") {
-        text = "\nvar " + name + "dat = [];\nvar " + name + "lab = [];\nlineChart('" + name + "'," + name + "lab," + name + "dat);\nsocket.on('" + name + "', function (msg) {\n" + name + "lab = msg.labs;\n" + name + "dat = msg.dat;\nfor (z in " + name + "dat) {\n" + name + ".data.datasets[0].data[z] = " + name + "dat[z];\n} \n" + name + ".data.labels = " + name + "lab;\n" + name + ".update();\n}); \n";
+        text = "\nvar " + name + "dat = [];\nvar " + name + "lab = [];\nlineChart('" + name + "'," + name + "lab," + name + "dat);\nsocket.on('" + name + "', function (msg) {\n" + name + "lab = msg.labs;\n" + name + "dat = msg.dat;\nfor (z in " + name + "dat) {\n" + name + ".data.datasets[0].data[z] = " + name + "dat[z];} \n" + name + ".data.labels = " + name + "lab;\n" + name + ".update();}); \n";
     }
     fs.appendFile('./Public/js/index.js', text, function (err) {
         console.log(err);
     });
 }
 
+
+function remHTML(data) {
+    dname = data;
+    fs.readFile('./Public/index.html', 'utf8', function (error, data) {
+        jsdom.env(data, [], function (errors, window) {
+            var $ = require('jquery')(window);
+            data = data.replace('<div class="display"><canvas id="'+dname+'" width="400" height="400"></canvas></div>\n','');
+            //console.log($('#' + dname).closest("canvas"));
+            fs.writeFile('./Public/index.html',data,
+                function (error) {
+                    if (error) throw error;
+                });
+        });
+    });
+    io.emit('reload');
+}
+function remJS(name,type) {
+    //Look at add and remove, dependant on type
+    var text = [];
+    if (type === "Text") {
+        text = "\nsocket.on('" + name + "', function (msg) {no = msg; $('#" + name + "').html('<h1>' + no + '</h1>');});\n";
+    } else if (type === "Bar") {
+        text.push('var ' + name + 'dat = [];');
+        text.push('var ' + name + 'lab = [];');
+        text.push('barChart("' + name + '",' + name + 'lab,' + name + 'dat);');
+        text.push('socket.on("' + name + '", function (msg) {');
+        text.push(name + 'lab = msg.labs;');
+        text.push(name + 'dat = msg.dat;');
+        text.push('for (z in ' + name + 'dat) {');
+        text.push(name + '.data.datasets[0].data[z] = ' + name + 'dat[z];}');
+        text.push(name + '.data.labels = ' + name + 'lab;');
+        text.push(name + '.update();});');
+
+
+
+
+        //text = '/var ' + name + 'dat = [];[\\s\\S]var ' + name + 'dat = [];/gm';
+        //text = '/var ' + name + 'dat = []; var ' + name + 'lab = [];[/s/S]+/m';
+        //\nbarChart("' + name + '", ' + name + 'lab, ' + name + 'dat); \nsocket.on("' + name + '", function (msg) { \n' + name + 'lab = msg.labs; \n' + name + 'dat = msg.dat; \nfor(z in ' + name + 'dat) {\n' + name + '.data.datasets[0].data[z] = ' + name + 'dat[z]; \n } \n' + name + '.data.labels = ' + name + 'lab; \n' + name + '.update(); \n }); ';
+    }
+    else if (type === "Polar") {
+        text = "\nvar " + name + "dat = [];\nvar " + name + "lab = [];\npolarChart('" + name + "'," + name + "lab," + name + "dat);\nsocket.on('" + name + "', function (msg) {\n" + name + "lab = msg.labs;\n" + name + "dat = msg.dat;\nfor (z in " + name + "dat) {\n" + name + ".data.datasets[0].data[z] = " + name + "dat[z];\n} \n" + name + ".data.labels = " + name + "lab;\n" + name + ".update();\n}); \n";
+    }
+    else if (type === "Line") {
+        text = "\nvar " + name + "dat = [];\nvar " + name + "lab = [];\nlineChart('" + name + "'," + name + "lab," + name + "dat);\nsocket.on('" + name + "', function (msg) {\n" + name + "lab = msg.labs;\n" + name + "dat = msg.dat;\nfor (z in " + name + "dat) {\n" + name + ".data.datasets[0].data[z] = " + name + "dat[z];\n} \n" + name + ".data.labels = " + name + "lab;\n" + name + ".update();\n}); \n";
+    }
+
+
+
+    fs.readFile('./Public/js/index.js', 'utf8', function (error, data) {
+        var regex = new RegExp('var ' + name + 'dat = [];[\s\S] *?' + name + '.update();', "m");
+        for (x in text) {
+            data = data.replace(text[x], '');
+        }
+        data = data.replace(/\n\s*\n\s*\n/g, '\n\n');
+
+
+        
+        console.log(data);
+            //console.log($('#' + dname).closest("canvas"));
+        fs.writeFile('./Public/js/index.js', data,
+                function (error) {
+                    if (error) throw error;
+                });
+        
+    });
+    io.emit('reload');
+}
+ function remarr (arr,name, value) {
+    jsdom.env(name, [], function (errors, window) {
+        var $ = require('jquery')(window);
+        var array = $.map(arr, function (v, i) {
+            return v[name] === value ? null : v;
+        });
+        arr.length = 0; //clear original array
+        arr.push.apply(arr, array); //push all elements except the one we want to delete
+
+    });
+    return arr;
+}
+function remJSON(data) {
+    //$.getJSON("/config.json", function (data) {
+    //    data.charts.push(data);
+    //});
+
+    var obj = require('./Public/config.json');
+    arr = obj.charts;
+    //obj.charts = remarr(obj.charts, 'name', data);
+    jsdom.env(data, [], function (errors, window) {
+        var $ = require('jquery')(window);
+        var array = $.map(arr, function (v, i) {
+            return v['name'] === data ? null : v;
+        });
+        arr.length = 0; //clear original array
+        arr.push.apply(arr, array); //push all elements except the one we want to delete
+
+    });
+    obj.charts = arr;
+    console.log(obj);
+    fs.writeFile('./Public/config.json', JSON.stringify(obj), function (err) {
+        console.log(err);
+    });
+}
 
 function updateHTML(data) {
     name = data.name;

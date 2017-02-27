@@ -1,1 +1,39 @@
-{"charts":[{"name":"myChart","type":"Bar","csql":"SELECT DayName(left(created,10)) AS Day, count(tid) AS noTweets FROM tweets WHERE left(created,10)<=DATE_FORMAT(CURDATE(),'%Y-%m-%d')AND left(created,10)>DATE_FORMAT(date_add(curdate(),INTERVAL -7 DAY),'%d-%M-%Y') GROUP By DayName(left(created,10))"},{"name":"noTweetsDay","type":"Text","csql":"SELECT Count(tid) AS 'noTw' FROM tweets WHERE left(created,10)=DATE_FORMAT(CURDATE(),'%Y-%m-%d')"},{"name":"twpd","type":"Text","csql":"SELECT Count(tid) AS 'noTw' FROM tweets  WHERE left(created,10)=DATE_FORMAT(CURDATE(),'%Y-%m-%d')"},{"name":"tsts","type":"Bar","csql":"SELECT DayName(left(created,10)) AS Day, count(tid) AS noTweets FROM tweets WHERE left(created,10)<=DATE_FORMAT(CURDATE(),'%Y-%m-%d')AND left(created,10)>DATE_FORMAT(date_add(curdate(),INTERVAL -7 DAY),'%d-%M-%Y') GROUP By DayName(left(created,10))"},{"csql":"SELECT DayName(left(created,10)) AS Day, count(tid) AS noTweets FROM tweets WHERE left(created,10)<=DATE_FORMAT(CURDATE(),'%Y-%m-%d')AND left(created,10)>DATE_FORMAT(date_add(curdate(),INTERVAL -7 DAY),'%d-%M-%Y') GROUP By DayName(left(created,10))","name":"LineTest","type":"Line"},{"csql":"SELECT COUNT(tid) FROM tweets","name":"tttt","type":"Text"},{"name":"BlogNonBlog","type":"Bar","csql":"SELECT blog AS 'Type',\nCOUNT(tid) AS 'no' FROM tweets\nGROUP BY blog"},{"name":"MSTest4","type":"Polar","csql":"SELECT COUNT(tid) AS 'Tweets' FROM tweets GROUP BY blog"}]}
+{
+  "charts": [
+    {
+      "name": "myChart",
+      "type": "Bar",
+      "csql": "SELECT DayName(left(created,10)) AS Day, count(tid) AS noTweets FROM tweets WHERE left(created,10)<=DATE_FORMAT(CURDATE(),'%Y-%m-%d')AND left(created,10)>DATE_FORMAT(date_add(curdate(),INTERVAL -7 DAY),'%d-%M-%Y') GROUP By DayName(left(created,10))"
+    },
+    {
+      "name": "noTweetsDay",
+      "type": "Text",
+      "csql": "SELECT Count(tid) AS 'noTw' FROM tweets WHERE left(created,10)=DATE_FORMAT(CURDATE(),'%Y-%m-%d')"
+    },
+    {
+      "name": "twpd",
+      "type": "Text",
+      "csql": "SELECT Count(tid) AS 'noTw' FROM tweets  WHERE left(created,10)=DATE_FORMAT(CURDATE(),'%Y-%m-%d')"
+    },
+    {
+      "name": "tsts",
+      "type": "Bar",
+      "csql": "SELECT DayName(left(created,10)) AS Day, count(tid) AS noTweets FROM tweets WHERE left(created,10)<=DATE_FORMAT(CURDATE(),'%Y-%m-%d')AND left(created,10)>DATE_FORMAT(date_add(curdate(),INTERVAL -7 DAY),'%d-%M-%Y') GROUP By DayName(left(created,10))"
+    },
+    {
+      "csql": "SELECT DayName(left(created,10)) AS Day, count(tid) AS noTweets FROM tweets WHERE left(created,10)<=DATE_FORMAT(CURDATE(),'%Y-%m-%d')AND left(created,10)>DATE_FORMAT(date_add(curdate(),INTERVAL -7 DAY),'%d-%M-%Y') GROUP By DayName(left(created,10))",
+      "name": "LineTest",
+      "type": "Line"
+    },
+    {
+      "csql": "SELECT blog AS 'Type',\nCOUNT(tid) AS 'no' FROM tweets\nGROUP BY blog",
+      "name": "BlogNonBlog",
+      "type": "Bar"
+    },
+    {
+      "csql": "SELECT COUNT(tid) AS 'Tweets' FROM tweets GROUP BY blog",
+      "name": "MSTest4",
+      "type": "Polar"
+    }
+  ]
+}

@@ -38,6 +38,7 @@
     <Compile Include="Public\js\mode-javascript.js" />
     <Compile Include="Public\js\mode-mysql.js" />
     <Compile Include="Public\js\theme-monokai.js" />
+    <Compile Include="Public\js\validator.js" />
     <Compile Include="Public\js\worker-javascript.js" />
     <Compile Include="server.js" />
     <Compile Include="Twitter\twitter.js" />
@@ -55,6 +56,7 @@
     <Content Include="Public\css\jquery-ui.css" />
     <Content Include="README.md" />
     <Content Include="Twitter\mlData1.csv" />
+    <Content Include="Twitter\Spark_MLcurr.py" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Public\css\images\" />

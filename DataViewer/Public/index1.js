@@ -222,6 +222,19 @@ socket.on('LineTest', function (msg) {
     LineTest.update();
 });
 
+
+var BlogNonBlogdat = [];
+var BlogNonBloglab = [];
+barChart("BlogNonBlog",BlogNonBloglab,BlogNonBlogdat);
+socket.on("BlogNonBlog", function (msg) {
+BlogNonBloglab = msg.labs;
+BlogNonBlogdat = msg.dat;
+for (z in BlogNonBlogdat) {
+BlogNonBlog.data.datasets[0].data[z] = BlogNonBlogdat[z];
+}
+BlogNonBlog.data.labels = BlogNonBloglab;
+BlogNonBlog.update();
+});
 var MSTest4dat = [];
 var MSTest4lab = [];
 polarChart('MSTest4', MSTest4lab, MSTest4dat);
