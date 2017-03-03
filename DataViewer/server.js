@@ -17,10 +17,10 @@ var Q = require('q');
 
 
 var con = mysql.createConnection({
-    host: "matthew95.co.uk",
-    user: "root",
-    password: "matt110395",
-    database: "tweets",
+    host: conf.DBServer,
+    user: conf.DBUser,
+    password: conf.DBPass,
+    database: conf.DBName,
     charset: "utf8mb4_unicode_ci"
 });
 con.connect(function (err) {
@@ -230,6 +230,7 @@ function tweetbyday() {
 
 
 io.on('connection', function (socket) {
+ 
     console.log("TEST");
     io.emit('temp', 'test1');
     socket.on('append', function (data) {
@@ -242,9 +243,30 @@ io.on('connection', function (socket) {
     });
     socket.on('remove', function (data) {
 
-        remHTML(data.name);
+        remHTML(data.name,data.type,data.title );
         remJSON(data.name,data.type,data.sql);
         remJS(data.name, data.type);
+
+    });
+    socket.on('DBUP', function (data) {
+ 
+           
+            conf.DBServer = data.server;
+            conf.DBName = data.dname;
+            conf.DBUser = data.user;
+            conf.DBPass = data.password;
+
+          
+
+            fs.writeFile('./Public/config.json', JSON.stringify(conf),
+                function (error) {
+                    if (error) throw error;
+                });
+
+
+
+
+        
 
     });
 });
@@ -252,7 +274,7 @@ io.on('connection', function (socket) {
 function updateJS(data) {
     name = data.name;
     if (data.type === "Text") {
-        text = "\nsocket.on('" + name + "', function (msg) {no = msg; $('#" + name + "').html('<h1>' + no + '</h1>');});\n";
+        text = "\nsocket.on('" + name + "', function (msg) {no = msg.dat; $('#" + name + "').html('<h1>' + no + '</h1>');});\n";
     } else if(data.type === "Bar") {
         text = "\nvar " + name + "dat = [];\nvar " + name + "lab = [];\nbarChart('" + name + "'," + name + "lab," + name + "dat);\nsocket.on('" + name + "', function (msg) {\n"+name+"lab = msg.labs;\n"+name+"dat = msg.dat;\nfor (z in "+name+"dat) {\n"+name+".data.datasets[0].data[z] = "+name+"dat[z];} \n"+name+".data.labels = "+name+"lab;\n"+name+".update();}); \n";
     }
@@ -268,12 +290,17 @@ function updateJS(data) {
 }
 
 
-function remHTML(data) {
+function remHTML(data,typ,title) {
     dname = data;
     fs.readFile('./Public/index.html', 'utf8', function (error, data) {
         jsdom.env(data, [], function (errors, window) {
             var $ = require('jquery')(window);
-            data = data.replace('<div class="display"><canvas id="'+dname+'" width="400" height="400"></canvas></div>\n','');
+            if (type == 'Text') {
+                data = data.replace("<div class='display'><h3>"+title+"</h3><br/><h1 id='" + dname + "'>0</h1></div>\n", '');
+
+            } else {
+                data = data.replace("<div class='display'><h3>"+title+"</h3><canvas id='" + dname + "'></canvas></div>\n", '');
+            }
             //console.log($('#' + dname).closest("canvas"));
             fs.writeFile('./Public/index.html',data,
                 function (error) {
@@ -287,9 +314,9 @@ function remJS(name,type) {
     //Look at add and remove, dependant on type
     var text = [];
     if (type === "Text") {
-       
-        text.push("socket.on('" + name + "', function (msg) {no = msg; $('#" + name + "').html('< h1 > ' + no + '</h1 >');});");
-    } else if (type === "Bar") {
+        text.push("socket.on('" + name + "', function (msg) { no = msg.dat; $('#" + name + "').html('<h1>' + no + '</h1>'); });");
+
+           } else if (type === "Bar") {
         text.push('var ' + name + 'dat = [];');
         text.push('var ' + name + 'lab = [];');
         text.push("barChart('" + name + "'," + name + "lab," + name + "dat);");
@@ -392,8 +419,10 @@ function remJSON(name,type) {
 
     text.push('{"name":"' + name + '","type":"' + type + '","csql":"' + sql + '"},');
     text.push(',{"name":"' + name + '","type":"' + type + '","csql":"' + sql + '"}');
+    text.push('{"name":"' + name + '","type":"' + type + '","csql":"' + sql + '"}');
     text.push(',{"csql":"' + sql + '","name":"' + name + '","type":"' + type + '"}');
     text.push('{"csql":"' + sql + '","name":"' + name + '","type":"' + type + '"},');
+    text.push('{"csql":"' + sql + '","name":"' + name + '","type":"' + type + '"}');
 
 
 
@@ -421,6 +450,7 @@ function remJSON(name,type) {
 
 function updateHTML(data) {
     name = data.name;
+    title = data.title;
     //text = "\n<div class='display'><h1 id='" + name + "'>0</h1></div>\n";
     //fs.appendFile('./Public/js/index.js', text, function (err) {
     //    console.log(err);
@@ -428,15 +458,15 @@ function updateHTML(data) {
 
 
 
-    fs.readFile('./Public/index.html', 'utf8', function (error, data) {
-        jsdom.env(data, [], function (errors, window) {
+    fs.readFile('./Public/index.html', 'utf8', function (error, hdata) {
+        jsdom.env(hdata, [], function (errors, window) {
             var $ = require('jquery')(window);
             $("#slide").each(function () {
                 var content = $(this);
                 if (data.type === "Text") {
-                    $(this).append("\n<div class='display'><h1 id='" + name + "'>0</h1></div>\n ");
+                    $(this).append("\n<div class='display'><h3>"+title+"</h3><br><h1 id='" + name + "'>0</h1></div>\n ");
                 } else {
-                    $(this).append("\n<div class='display'><canvas id= "+name+" width= '400' height='400' ></canvas></div>\n ");
+                    $(this).append("\n<div class='display'><h3>" + title +"</h3><canvas id='"+name+"'></canvas></div>\n ");
                 } 
             });
 
@@ -460,6 +490,7 @@ function updateJSON(data) {
         console.log(err);
     });
 }
+
 
 app.use(express.static('public'));
 app.use('/js', express.static(__dirname + 'public / js'));

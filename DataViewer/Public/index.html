@@ -1,37 +1,68 @@
-<html xmlns="http://www.w3.org/1999/xhtml"><head>
+﻿<html xmlns="http://www.w3.org/1999/xhtml"><head>
     <meta charset="utf-8">
     <title></title>
+    <link href="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet">
+    <link href="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css" rel="stylesheet">
+    <style>
+        #cont{
+            width:75%;
+            height:80%;
+        }
+        h3{
+            text-align:center;
+        }
+        .container-fluid h3 {
+            font-size: 300%;
+            
+        }
+        .container-fluid
+        h1{
+            font-size:300%;
+            font-weight:bold;
+             position: absolute;
+  margin: auto;
+  top: -10%;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  height: 10%;
+
+  text-align:center;
+}
+        .bottom-right{
+  position: absolute;
+  bottom: 0;
+  right: 0;
+}
+    </style>
 </head>
 <body>
+    <h1 class="col-md-6">Data Viewer</h1>
 
-    <h5 id="time"></h5>
-    <div id="slide">
-                <div class="display">
-            <h3>Number of Tweets Today</h3>
-            <h1 id="noTwe">0</h1>
-        </div>
+    <h1 id="time" class="col-md-6 text-right"></h1>
+    <div id="cont" class="container-fluid">
+        <div>
+        <div id="slide" style="max-height:80%" class="container-fluid">
+            </div>
 
-        <div class="display"><h1 id="twpd">0</h1></div>
-        <div class="display"><canvas id="tsts" width="400" height="400"></canvas></div>
+
+     
         
-
-        
-        
-
-
-       
-    
+<div class="display"><h3>mattgew</h3><canvas id="Test"></canvas></div>
  
+<div class="display"><h3>mattgew</h3><br><h1 id="Tet">0</h1></div>
  
-<div class="display"><canvas id="uy" width="400" height="400"></canvas></div>
- 
-<div class="display"><canvas id="uy" width="400" height="400"></canvas></div>
- 
- 
+<div class="display"><h3>mattgew</h3><br><h1 id="TETSTT">0</h1></div>
  </div>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.js
-"></script>
-    <script src="http://localhost:8000/socket.io/socket.io.js"></script>
+        </div>
+    <div class="bottom-right">
+    <button type='button' onclick="window.location = './config.html';" class='btn btn-primary btn-large btn-skip'>Config</button>
+        </div>
     <script src="js/jquery-3.1.1.js"></script>
-    <script src="js/index.js"></script>
+
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.js
+"></script>
+        <script src="http://localhost:8000/socket.io/socket.io.js"></script>
+    <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+        <script src="js/index.js"></script>
 </body></html>

@@ -28,12 +28,38 @@ $.getJSON("http://localhost:8000/config.json", function (json) {
 
 
     }
+    $('#dbtit').append(json.DBName);
+    $('#dserver').val(json.DBServer);
+    $('#dname').val(json.DBName);
+    $('#uname').val(json.DBUser);
+    $('#pass').val(json.DBPass);
+
 });
+
+function DBup() {
+    serv = $('#dserver').val();
+    name = $('#dname').val();
+    uname = $('#uname').val();
+    pass = $('#pass').val();
+
+    dbdet = {
+        server: serv,
+        dname: name,
+        user: uname,
+        password: pass
+    };
+
+    socket.emit('DBUP', dbdet);
+
+
+}
+
 
 function addTo() {
     charn = $("#cname").val();
     chty = $("#type").val();
     charsql = $("#sql").val();
+    chtit = $("#ctit").val();
     if (!charn) {
         alert("Enter a ChartName");
         $("#errName").html("Enter Chart Name");
@@ -53,8 +79,9 @@ function addTo() {
         chartName.push(charn);
 
 
-        data = { name: charn, type: chty, csql: charsql };
+        data = { name: charn, type: chty, csql: charsql, title: chtit };
         socket.emit('append', data);
+        location.reload();
     }
 }
 function remove(cname,ctype) {
@@ -70,6 +97,11 @@ $(function () {
     $("#accordian").accordion({
         collapsible: true
     
+    });
+    $("#DB").accordion({
+        collapsible: true,
+        active: false
+
     });
 });
 //var editor = ace.edit("editor");
@@ -90,4 +122,15 @@ socket.on('reload', function (data) {
     location.reload(true);
     alert("RELOAD");
     
+});
+
+$("#newChar").click(function () {
+    alert("Handler for .click() called.");
+    $("#dialog").dialog();
+
+    $("#dialog").dialog();
+    });
+$(function () {
+    $("#dialog").dialog();
+    $("#dialog").dialog('close');
 });

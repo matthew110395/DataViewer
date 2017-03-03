@@ -1,10 +1,13 @@
-var noTweets = 0
+﻿var noTweets = 0
 var socket = io();
 var tweetByDayLab = [];
 var tweetByDayDat = [];
 
 $.getJSON("http://localhost:8000/config.json", function (json) {
     console.log(json);
+    if (json.charts.length < 1) {
+        window.location.href = "./config.html";
+    }
     for (x in json.charts) {
         console.log(json.charts[x]);
     }
@@ -31,23 +34,12 @@ setInterval(function () {
     $('#time').html(time);
 }, 1000);
 
-socket.on('noTweetsDay', function (msg) {
-    noTweets = msg.dat[0];
-
-    $('#noTwe').html('<h1>' + noTweets + '</h1>');});
 
 
-socket.on('myChart', function (msg) {
-    console.log(msg);
-    tweetByDayLab = msg.labs;
-    tweetByDayDat = msg.dat;
-    for (z in tweetByDayDat) {
-        myChart.data.datasets[0].data[z] = tweetByDayDat[z]; }
-    myChart.data.labels = tweetByDayLab;
 
-    //myChart.data.datasets[0].data = tweetByDayDat;
+    
 
-    myChart.update();});
+    
 
 //Rotate through divs which have an id beinging with chart
 //var divs = $('div[id^="chart"]').hide(),
@@ -98,7 +90,7 @@ function barChart(name, lab, dat) {
             }]
         },
         options: {
-
+            //maintainAspectRatio: false,
             resposive: true
         }
     });
@@ -138,6 +130,7 @@ function polarChart(name, lab, dat) {
         options: {
 
             resposive: true
+            
         }
     });
 
@@ -186,17 +179,19 @@ function lineChart(name, lab, dat) {
     });
 
 }
+var Testdat = [];
+var Testlab = [];
+barChart('Test',Testlab,Testdat);
+socket.on('Test', function (msg) {
+Testlab = msg.labs;
+Testdat = msg.dat;
+for (z in Testdat) {
+Test.data.datasets[0].data[z] = Testdat[z];} 
+Test.data.labels = Testlab;
+Test.update();}); 
 
-barChart("myChart", tweetByDayLab, tweetByDayDat);
+socket.on('Tet', function (msg) {no = msg.dat; $('#Tet').html('<h1>' + no + '</h1>');});
+
+socket.on('TETSTT', function (msg) { no = msg.dat; $('#TETSTT').html('<h1>' + no + '</h1>'); });
 
 
-socket.on('twpd', function (msg) { no = msg.dat; $('#twpd').html('<h1>' + no + '</h1>'); }); var tstsdat = [];
-var tstslab = [];
-barChart('tsts', tstslab, tstsdat);
-socket.on('tsts', function (msg) {
-    tstslab = msg.labs;
-    tstsdat = msg.dat;
-    for (z in tstsdat) {
-        tsts.data.datasets[0].data[z] = tstsdat[z];}
-    tsts.data.labels = tstslab;
-    tsts.update();});

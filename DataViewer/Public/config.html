@@ -4,65 +4,99 @@
 <head>
     <meta charset="utf-8" />
     <title></title>
-    <link href="css/jquery-ui.css" rel="stylesheet" />
+
     <style type="text/css" media="screen">
         .ace_editor {
-		border: 1px solid lightgray;
-		margin: auto;
-		height: 100px;
-		width: 30%;
-	}
-	.scrollmargin {
-		height: 80px;
-        text-align: center;
-        width:0px;
-	}
+            border: 1px solid lightgray;
+            margin: auto;
+            height: 100px;
+            width: 30%;
+        }
+
+        .scrollmargin {
+            height: 80px;
+            text-align: center;
+            width: 0px;
+        }
     </style>
 
     <link href="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet" />
     <link href="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css" rel="stylesheet" />
     <link href="http://cdnjs.cloudflare.com/ajax/libs/jquery.bootstrapvalidator/0.5.0/css/bootstrapValidator.min.css" rel="stylesheet" />
+    <link href="css/jquery-ui.css" rel="stylesheet" />
 </head>
 <body>
-    
+    <h1>Data Viewer</h1>
+    <div id="dialog" title="New Chart" hidden>
+
         <form id="newChart">
             <div class="form-group">
                 <label for="cname">Chart Name:</label><input type="text" id="cname" name="cname" class="form-control" /><p id="errName"></p>
             </div>
-    <div class="form-group">
-        <label for="type">Type:</label><select id="type" class="form-control">
-                <option>Bar</option>
-                <option>Line</option>
-                <option>Pie</option>
-                <option>Text</option>
-                <option>Polar</option>
-            </select>
-        </div>
-    <div class="form-group">
-        <label for="sql">SQL:</label>
-            <textarea name="sql" id="sql" cols="40" rows="5" class="form-control"></textarea>
-            <!--<input type="text" id="sql" name="sql"  />-->
-
-            <!--<div id="editor" class="form-control"></div>-->
-          
-           >
-            <!--<textarea id="sql" rows="6"></textarea>-->
-        </div>
+            <div class="form-group">
+                <label for="cname">Chart Title:</label><input type="text" id="ctit" name="ctit" class="form-control" /><p id="errName"></p>
+            </div>
+            <div class="form-group">
+                <label for="type">Type:</label><select id="type" class="form-control">
+                    <option>Bar</option>
+                    <option>Line</option>
+                    <option>Pie</option>
+                    <option>Text</option>
+                    <option>Polar</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="sql">SQL:</label>
+                <textarea name="sql" id="sql" cols="40" rows="5" class="form-control"></textarea>
+                <!--<input type="text" id="sql" name="sql"  />-->
+                <!--<div id="editor" class="form-control"></div>-->
+                <!--<textarea id="sql" rows="6"></textarea>-->
+            </div>
             <button type="button" id="submit" onclick="addTo()" class="btn btn-default">Add</button>
         </form>
-        
-        <div id="accordian">
+    </div>
+
+    <div class="container">
+        <h2>Database Information</h2>
+        <div id="DB">
+            <h3 id="dbtit">Current Database: </h3>
+            <form id="DBDetail">
+                <div class="form-group">
+                    <label for="dserver">Server:</label><input type="text" id="dserver" name="dserver" class="form-control" />
+                </div>
+                <div class="form-group">
+                    <label for="dname">Database Name:</label><input type="text" id="dname" name="dname" class="form-control" />
+                </div>
+                <div class="form-group">
+                    <label for="uname">Username:</label><input type="text" id="uname" name="uname" class="form-control" />
+                </div>
+                <div class="form-group">
+                    <label for="pass">Password:</label><input type="password" id="pass" name="pass" class="form-control" />
+                </div>
 
 
+                <button type="button" id="submit" onclick="DBup()" class="btn btn-default">Update</button>
+            </form>
         </div>
-        <script src="js/ace.js"></script>
-        <script src="http://localhost:8000/socket.io/socket.io.js"></script>
-        <script src="js/jquery-3.1.1.js"></script>
-        <script src="js/jquery-ui.js"></script>
-        <script src="js/config.js"></script>
-        <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
-        <script src="http://cdnjs.cloudflare.com/ajax/libs/bootstrap-validator/0.4.5/js/bootstrapvalidator.min.js"></script>
-        <script src="js/validator.js"></script>
+        <br />
+
+        <button id="newChar" class="btn btn-success pull-right">New Chart</button>
+        <br />
+        
+        <h2>Current Charts</h2>
+        <div id="accordian">
+        </div>
+
+    </div>
+    <script src="js/ace.js"></script>
+    <script src="http://localhost:8000/socket.io/socket.io.js"></script>
+    <script src="js/jquery-3.1.1.js"></script>
+
+    <script src="js/config.js"></script>
+    <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/bootstrap-validator/0.4.5/js/bootstrapvalidator.min.js"></script>
+    <script src="js/jquery-ui.js"></script>
+    <script src="js/validator.js"></script>
 
 </body>
 </html>
