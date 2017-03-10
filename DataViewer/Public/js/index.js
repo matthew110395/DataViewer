@@ -134,8 +134,10 @@ function polarChart(name, lab, dat) {
                 }]
             },
             options: {
+                
+                resposive: true,
+                    maintainAspectRatio: false
 
-                resposive: true
 
             }
         });

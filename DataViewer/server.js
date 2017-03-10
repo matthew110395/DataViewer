@@ -299,9 +299,12 @@ function remHTML(data,typ,title) {
         jsdom.env(data, [], function (errors, window) {
             var $ = require('jquery')(window);
             if (type == 'Text') {
-                data = data.replace("<div class='display'><h3>"+title+"</h3><br/><h1 id='" + dname + "'>0</h1></div>\n", '');
+                data = data.replace("<div class='display'><h3>" + title + "</h3><br/><h1 id='" + dname + "'>0</h1></div>\n", '');
 
-            } else {
+            } else if (type == 'Polar') {
+                style = "width:98%; height:98%"
+                data = data.replace("<div class='display'><h3>" + title + "</h3><canvas id='" + dname + "' style ='width:98%; height:98%'></canvas></div>\n", '');
+            } else    {
                 data = data.replace("<div class='display'><h3>"+title+"</h3><canvas id='" + dname + "'></canvas></div>\n", '');
             }
             //console.log($('#' + dname).closest("canvas"));
@@ -467,7 +470,10 @@ function updateHTML(data) {
             $("#slide").each(function () {
                 var content = $(this);
                 if (data.type === "Text") {
-                    $(this).append("\n<div class='display'><h3>"+title+"</h3><br><h1 id='" + name + "'>0</h1></div>\n ");
+                    $(this).append("\n<div class='display'><h3>" + title + "</h3><br><h1 id='" + name + "'>0</h1></div>\n ");
+                } else if (data.type ==="Polar"){
+                    $(this).append("\n\n<div class='display'><h3>" + title + "</h3><canvas id='" + name +"' style='width:98%; height:98%'></canvas></div>\n ");
+                
                 } else {
                     $(this).append("\n<div class='display'><h3>" + title +"</h3><canvas id='"+name+"'></canvas></div>\n ");
                 } 
