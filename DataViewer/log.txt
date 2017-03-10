@@ -1,0 +1,1 @@
+Error: ER_ACCESS_DENIED_ERROR: Access denied for user ''@'localhost' (using password: NO)

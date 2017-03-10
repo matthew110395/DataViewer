@@ -26,6 +26,8 @@ var con = mysql.createConnection({
 con.connect(function (err) {
     if (err) {
         console.log('Error connecting to Db');
+        fs.writeFile('log.txt', err);
+       
         return;
     }
     console.log('Connection established');
@@ -73,6 +75,7 @@ function query(qer,name) {
 var i = 0;
 setInterval(function () {
     var n = 0
+    conf = require('./Public/config.json');
     //for (var n = 0; n < conf.charts.length; n++) {
     while (n < conf.charts.length) {
 

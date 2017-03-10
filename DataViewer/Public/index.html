@@ -34,6 +34,12 @@
   bottom: 0;
   right: 0;
 }
+                    canvas{
+        /*width: 100% !important;*/
+        /*max-width:60%;*/
+        height: auto !important;
+       height:60%;
+    }
     </style>
 </head>
 <body>
@@ -43,7 +49,17 @@
     <div id="cont" class="container-fluid">
         <div>
         <div id="slide" style="max-height:80%" class="container-fluid">
-            </div>
+            
+<div class="display"><h3>Tweets By Day</h3><canvas id="Tweets"></canvas></div>
+ 
+<div class="display"><h3>Tweets Polar</h3><canvas id="Tweets2"></canvas></div>
+ 
+<div class="display"><h3>Tweets Line</h3><canvas id="tweets3"></canvas></div>
+ 
+<div class="display"><h3>test</h3><br><h1 id="test4">0</h1></div>
+ 
+<div class="display"><h3>Employees by Department</h3><canvas id="edept"></canvas></div>
+ </div>
 
 
      
@@ -56,7 +72,7 @@
  </div>
         </div>
     <div class="bottom-right">
-    <button type='button' onclick="window.location = './config.html';" class='btn btn-primary btn-large btn-skip'>Config</button>
+    <button type="button" onclick="window.location = './config.html';" class="btn btn-primary btn-large btn-skip">Config</button>
         </div>
     <script src="js/jquery-3.1.1.js"></script>
 
@@ -65,4 +81,22 @@
         <script src="http://localhost:8000/socket.io/socket.io.js"></script>
     <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
         <script src="js/index.js"></script>
+    <script type="text/javascript">
+        //Rotate through divs which have an id beinging with chart
+        //var divs = $('div[id^="chart"]').hide(),
+        setTimeout(function () {
+            var divs = $('.display').hide(),
+                i = 0;
+
+            (function cycle() {
+
+                divs.eq(i).fadeIn(400)
+                    .delay(10000)
+                    .fadeOut(400, cycle);
+
+                i = ++i % divs.length;
+
+            })();
+        },1000);
+    </script>
 </body></html>

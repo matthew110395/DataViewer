@@ -11,9 +11,18 @@ $('#newChart').bootstrapValidator({
     fields: {
         cname: {
             validators: {
-                stringLength: {
-                    min: 2,
+                regexp: {
+                    regexp: /^[\w]+$/,
+                    message: 'Spaces are not accepted'
                 },
+                notEmpty: {
+                    message: 'Please enter a chart name'
+                }
+            }
+        },
+        ctit: {
+            validators: {
+                
                 notEmpty: {
                     message: 'Please enter a chart name'
                 }
