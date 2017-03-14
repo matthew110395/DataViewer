@@ -73,7 +73,7 @@ function barChart(name, lab, dat) {
         data: {
             labels: lab,
             datasets: [{
-                label: 'Tweets',
+                label: lab,
                 data: dat,
                 backgroundColor: [
                     'rgba(255, 99, 132, 0.2)',
@@ -96,7 +96,10 @@ function barChart(name, lab, dat) {
         },
         options: {
             //maintainAspectRatio: false,
-            resposive: true
+            resposive: true,
+            legend: {
+                display: false
+            }
         }
     });
 
@@ -182,11 +185,23 @@ function lineChart(name, lab, dat) {
                     }
                 }]
             },
-            resposive: true
+            resposive: true,
+            legend: {
+                display: false
+            }
         }
     });
 
 }
+socket.on("ready", function (dat) {
+    //console.log("READY");
+    setTimeout(function () {
+        $("#loading-wrapper").hide();
+        //$("#main").show();
+    }, 2000);
+});
+
+
 var Testdat = [];
 var Testlab = [];
 barChart('Test',Testlab,Testdat);

@@ -135,7 +135,7 @@ setInterval(function () {
 
 
             console.log(values.cname, send);
-
+            io.emit('ready',"");
             io.emit(values.cname, send);
         });
         
