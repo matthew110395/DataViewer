@@ -84,7 +84,7 @@ def hash(s):
 sc = SparkContext("local[*]", "naivebayes")
 sqlContext = SQLContext(sc)
 try:
-    rdd = sc.textFile('mlData1.csv')
+    rdd = sc.textFile('Twitter/mlData1.csv')
 
     
 #tr,ts = rdd.randomSplit([0.7, 0.3])

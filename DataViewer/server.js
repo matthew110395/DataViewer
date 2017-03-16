@@ -14,9 +14,20 @@ var gulp = require('gulp');
 
 var Q = require('q');
 
-var spawn = require("child_process").spawn;
-var p = spawn("python", ["../Twitter/Spark_MLcurr.py"], { detached: true });
 
+//var child = require('child_process');
+//var python = child.spawn( 'python',['Twitter/Spark_MLcurr.py']);
+var spawn = require("child_process").spawn;
+//var spawn = require("child_process").spawn;
+//var p = spawn("python", ["Twitter/Spark_MLcurr.py"], {detached: true, stdio: 'ignore'});
+//p.unref();
+var p = spawn("python", ["Twitter/Spark_MLcurr.py"]);
+process.stdout.on('data',function(chunk){
+
+    var textChunk = chunk.toString('utf8');// buffer to string
+
+    console.log(textChunk);
+});
 
 
 
