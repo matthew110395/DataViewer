@@ -21,13 +21,17 @@ var spawn = require("child_process").spawn;
 //var spawn = require("child_process").spawn;
 //var p = spawn("python", ["Twitter/Spark_MLcurr.py"], {detached: true, stdio: 'ignore'});
 //p.unref();
-var p = spawn("python", ["Twitter/Spark_MLcurr.py"]);
-process.stdout.on('data',function(chunk){
+var p = spawn("python", ["Twitter/Spark_MLcurr.py"]),data = [1234];
 
-    var textChunk = chunk.toString('utf8');// buffer to string
+p.stdout.on('data',function(data){
 
-    console.log(textChunk);
+    
+
+    console.log(data.toString());
 });
+py.stdin.write(JSON.stringify(data));
+
+py.stdin.end();
 
 
 

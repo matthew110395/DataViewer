@@ -12,6 +12,8 @@ from pyspark.mllib.regression import LabeledPoint
 from pyspark.mllib import linalg as mllib_linalg
 from pyspark.ml import linalg as ml_linalg
 import time
+import json
+import sys
 import pandas as pd
 import tweepy
 import MySQLdb
@@ -80,6 +82,9 @@ def hash(s):
     val = arr[1]
     print(val)
     return val
+
+input  = json.loads(sys.stdin.readlines()[0])
+print input
     
 sc = SparkContext("local[*]", "naivebayes")
 sqlContext = SQLContext(sc)
