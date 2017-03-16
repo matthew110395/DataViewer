@@ -22,7 +22,7 @@ import MySQLdb
 class MyStreamListener(tweepy.StreamListener):
 
     def on_status(self, status):
-        #print(status.text)
+        print(status.text)
         try:
           stat = status.text.replace(',', '')
           stat = stat.replace('\n',' ')
