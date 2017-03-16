@@ -1,4 +1,4 @@
-var express = require('express');
+﻿var express = require('express');
 var app = express();
 var http = require('http').Server(app);
 var io = require('socket.io')(http);
@@ -19,17 +19,17 @@ var spawn = require("child_process").spawn;
 //var spawn = require("child_process").spawn;
 //var p = spawn("python", ["Twitter/Spark_MLcurr.py"], {detached: true, stdio: 'ignore'});
 //p.unref();
-var p = spawn("python", ["Twitter/Spark_MLcurr.py"],data = [conf.DBServer,conf.DBUser,conf.DBPass,conf.DBName,conf.tcc,conf.tcs,conf.tat,conf.tats]);
+var p = spawn("python", ["Twitter/Spark_MLcurr.py"], data = [conf.DBServer, conf.DBUser, conf.DBPass, conf.DBName, conf.tcc, conf.tcs, conf.tat, conf.tats]);
 var notw = 0;
 console.log(data);
 p.stdout.on('data', function (data) {
     notw++;
-    
+
 
     console.log(data.toString());
 });
-p.stdout.on('error',function (data){
-console.log(data.toString());
+p.stdout.on('error', function (data) {
+    console.log(data.toString());
 });
 p.stdout.on('end', function (data) {
     if (notw > 20) {
@@ -40,7 +40,7 @@ p.stdout.on('end', function (data) {
     }
     console.log(data);
 });
-p.stderr.on('data',function(data){
+p.stderr.on('data', function (data) {
     console.log(data.toString());
 });
 p.stdin.write(JSON.stringify(data));
@@ -60,7 +60,7 @@ con.connect(function (err) {
     if (err) {
         console.log('Error connecting to Db');
         fs.writeFile('log.txt', err);
-       
+
         return;
     }
     console.log('Connection established');
@@ -88,7 +88,7 @@ function getWordAt(str, pos) {
     return str.slice(left, right + pos);
 
 }
-function query(qer,name) {
+function query(qer, name) {
     var deferred = Q.defer();
 
     con.query(qer, function (err, datar, fields) {
@@ -96,7 +96,7 @@ function query(qer,name) {
             deferred.reject(new Error(err));
         } else {
             var obj = {
-                cname:name,
+                cname: name,
                 data: datar,
                 names: fields
             };
@@ -104,7 +104,7 @@ function query(qer,name) {
         }
     });
     return deferred.promise;
-  
+
 }
 
 var i = 0;
@@ -170,12 +170,12 @@ setInterval(function () {
 
 
             //console.log(values.cname, send);
-            io.emit('ready',"");
+            io.emit('ready', "");
             io.emit(values.cname, send);
         });
-        
+
         //con.query(conf.charts[n].csql, function (err, datar, fields) {
-           
+
         //        console.log(fields);
         //        //if (err) throw err
         //        sdata = datar
@@ -209,15 +209,15 @@ setInterval(function () {
         //            labs: labels,
         //            dat: data
         //        };
-           
-        
+
+
         //console.log(conf.charts[n].name, send);
-        
+
         //io.emit(conf.charts[n].name, send);
         //});
-    
+
         n++;
-        }
+    }
 
 
 }, 5000);
@@ -278,7 +278,7 @@ io.on('connection', function (socket) {
             }
         });
     });
- 
+
     //console.log("TEST");
     io.emit('temp', 'test1');
     socket.on('append', function (data) {
@@ -291,35 +291,35 @@ io.on('connection', function (socket) {
     });
     socket.on('remove', function (data) {
 
-        remHTML(data.name,data.type,data.title );
-        remJSON(data.name,data.type,data.sql);
+        remHTML(data.name, data.type, data.title);
+        remJSON(data.name, data.type, data.sql);
         remJS(data.name, data.type);
 
     });
     socket.on('DBUP', function (data) {
 
-            conf.DBServer = data.server;
-            conf.DBName = data.dname;
-            conf.DBUser = data.user;
-            conf.DBPass = data.password;
-            conf.tcheck = data.twitter;
-            conf.tcc = data.tconskey;
-            conf.tcs = data.tconssec;
-            conf.tat = data.taccesst;
-            conf.tats = data.taccesssec;
-            
-
-          
-
-            fs.writeFile('./Public/config.json', JSON.stringify(conf),
-                function (error) {
-                    if (error) throw error;
-                });
+        conf.DBServer = data.server;
+        conf.DBName = data.dname;
+        conf.DBUser = data.user;
+        conf.DBPass = data.password;
+        conf.tcheck = data.twitter;
+        conf.tcc = data.tconskey;
+        conf.tcs = data.tconssec;
+        conf.tat = data.taccesst;
+        conf.tats = data.taccesssec;
 
 
 
 
-        
+        fs.writeFile('./Public/config.json', JSON.stringify(conf),
+            function (error) {
+                if (error) throw error;
+            });
+
+
+
+
+
 
     });
 });
@@ -328,11 +328,11 @@ function updateJS(data) {
     name = data.name;
     if (data.type === "Text") {
         text = "\nsocket.on('" + name + "', function (msg) {no = msg.dat; $('#" + name + "').html('<h1>' + no + '</h1>');});\n";
-    } else if(data.type === "Bar") {
-        text = "\nvar " + name + "dat = [];\nvar " + name + "lab = [];\nbarChart('" + name + "'," + name + "lab," + name + "dat);\nsocket.on('" + name + "', function (msg) {\n"+name+"lab = msg.labs;\n"+name+"dat = msg.dat;\nfor (z in "+name+"dat) {\n"+name+".data.datasets[0].data[z] = "+name+"dat[z];} \n"+name+".data.labels = "+name+"lab;\n"+name+".update();}); \n";
+    } else if (data.type === "Bar") {
+        text = "\nvar " + name + "dat = [];\nvar " + name + "lab = [];\nbarChart('" + name + "'," + name + "lab," + name + "dat);\nsocket.on('" + name + "', function (msg) {\n" + name + "lab = msg.labs;\n" + name + "dat = msg.dat;\nfor (z in " + name + "dat) {\n" + name + ".data.datasets[0].data[z] = " + name + "dat[z];} \n" + name + ".data.labels = " + name + "lab;\n" + name + ".update();}); \n";
     }
-     else if (data.type === "Polar") {
-    text = "\nvar " + name + "dat = [];\nvar " + name + "lab = [];\npolarChart('" + name + "'," + name + "lab," + name + "dat);\nsocket.on('" + name + "', function (msg) {\n" + name + "lab = msg.labs;\n" + name + "dat = msg.dat;\nfor (z in " + name + "dat) {\n" + name + ".data.datasets[0].data[z] = " + name + "dat[z];} \n" + name + ".data.labels = " + name + "lab;\n" + name + ".update();}); \n";
+    else if (data.type === "Polar") {
+        text = "\nvar " + name + "dat = [];\nvar " + name + "lab = [];\npolarChart('" + name + "'," + name + "lab," + name + "dat);\nsocket.on('" + name + "', function (msg) {\n" + name + "lab = msg.labs;\n" + name + "dat = msg.dat;\nfor (z in " + name + "dat) {\n" + name + ".data.datasets[0].data[z] = " + name + "dat[z];} \n" + name + ".data.labels = " + name + "lab;\n" + name + ".update();}); \n";
     }
     else if (data.type === "Line") {
         text = "\nvar " + name + "dat = [];\nvar " + name + "lab = [];\nlineChart('" + name + "'," + name + "lab," + name + "dat);\nsocket.on('" + name + "', function (msg) {\n" + name + "lab = msg.labs;\n" + name + "dat = msg.dat;\nfor (z in " + name + "dat) {\n" + name + ".data.datasets[0].data[z] = " + name + "dat[z];} \n" + name + ".data.labels = " + name + "lab;\n" + name + ".update();}); \n";
@@ -343,7 +343,7 @@ function updateJS(data) {
 }
 
 
-function remHTML(data,typ,title) {
+function remHTML(data, typ, title) {
     dname = data;
     fs.readFile('./Public/index.html', 'utf8', function (error, data) {
         jsdom.env(data, [], function (errors, window) {
@@ -354,11 +354,11 @@ function remHTML(data,typ,title) {
             } else if (type == 'Polar') {
                 style = "width:98%; height:98%"
                 data = data.replace("<div class='display'><h3>" + title + "</h3><canvas id='" + dname + "' style ='width:98%; height:98%'></canvas></div>\n", '');
-            } else    {
-                data = data.replace("<div class='display'><h3>"+title+"</h3><canvas id='" + dname + "'></canvas></div>\n", '');
+            } else {
+                data = data.replace("<div class='display'><h3>" + title + "</h3><canvas id='" + dname + "'></canvas></div>\n", '');
             }
             //console.log($('#' + dname).closest("canvas"));
-            fs.writeFile('./Public/index.html',data,
+            fs.writeFile('./Public/index.html', data,
                 function (error) {
                     if (error) throw error;
                 });
@@ -366,13 +366,13 @@ function remHTML(data,typ,title) {
     });
     io.emit('reload');
 }
-function remJS(name,type) {
+function remJS(name, type) {
     //Look at add and remove, dependant on type
     var text = [];
     if (type === "Text") {
         text.push("socket.on('" + name + "', function (msg) { no = msg.dat; $('#" + name + "').html('<h1>' + no + '</h1>'); });");
 
-           } else if (type === "Bar") {
+    } else if (type === "Bar") {
         text.push('var ' + name + 'dat = [];');
         text.push('var ' + name + 'lab = [];');
         text.push("barChart('" + name + "'," + name + "lab," + name + "dat);");
@@ -431,14 +431,14 @@ function remJS(name,type) {
 
 
 
-        
+
         //console.log(data);
-            //console.log($('#' + dname).closest("canvas"));
+        //console.log($('#' + dname).closest("canvas"));
         fs.writeFile('./Public/js/index.js', data,
-                function (error) {
-                    if (error) throw error;
-                });
-        
+            function (error) {
+                if (error) throw error;
+            });
+
     });
     gulp.task('default', function () {
         return gulp.src('./Public/js/index.js')
@@ -447,7 +447,7 @@ function remJS(name,type) {
     });
     io.emit('reload');
 }
- function remarr (arr,name, value) {
+function remarr(arr, name, value) {
     jsdom.env(name, [], function (errors, window) {
         var $ = require('jquery')(window);
         var array = $.map(arr, function (v, i) {
@@ -459,7 +459,7 @@ function remJS(name,type) {
     });
     return arr;
 }
-function remJSON(name,type) {
+function remJSON(name, type) {
     //$.getJSON("/config.json", function (data) {
     //    data.charts.push(data);
     //});
@@ -468,8 +468,8 @@ function remJSON(name,type) {
         if (conf.charts[c].name == name) {
             var sql = conf.charts[c].csql;
         }
-    
-        }
+
+    }
     var text = [];
 
 
@@ -499,9 +499,9 @@ function remJSON(name,type) {
 
     });
     io.emit('reload');
-    }
+}
 
-   
+
 
 
 function updateHTML(data) {
@@ -521,12 +521,12 @@ function updateHTML(data) {
                 var content = $(this);
                 if (data.type === "Text") {
                     $(this).append("\n<div class='display'><h3>" + title + "</h3><br><h1 id='" + name + "'>0</h1></div>\n ");
-                } else if (data.type ==="Polar"){
-                    $(this).append("\n\n<div class='display'><h3>" + title + "</h3><canvas id='" + name +"' style='width:98%; height:98%'></canvas></div>\n ");
-                
+                } else if (data.type === "Polar") {
+                    $(this).append("\n\n<div class='display'><h3>" + title + "</h3><canvas id='" + name + "' style='width:98%; height:98%'></canvas></div>\n ");
+
                 } else {
-                    $(this).append("\n<div class='display'><h3>" + title +"</h3><canvas id='"+name+"'></canvas></div>\n ");
-                } 
+                    $(this).append("\n<div class='display'><h3>" + title + "</h3><canvas id='" + name + "'></canvas></div>\n ");
+                }
             });
 
             fs.writeFile('./Public/index.html', window.document.documentElement.outerHTML,
@@ -549,6 +549,22 @@ function updateJSON(data) {
         console.log(err);
     });
 }
+setInterval(function () {
+    fs.readFile('log.txt', 'utf8', function (err, data) {
+        if (err) {
+            return console.log(err);
+        }
+        no = data.split(/\r\n|\r|\n/).length
+        if (no > 1000) {
+            var linesExceptFirst = data.split('\n').slice(no - 1000).join('\n');
+            fs.writeFile('log.txt', linesExceptFirst);
+            io.emit("log", linesExceptFirst);
+        } else {
+            io.emit("log", data);
+        }
+        
+    });
+}, 10000);
 
 
 app.use(express.static(__dirname + "/Public"));
@@ -558,7 +574,7 @@ app.use(express.static(__dirname + "/Public"));
 app.use('/js', express.static(__dirname + '/Public/js'));
 app.use('/css', express.static(__dirname + '/Public/css'));
 //app.use(app.router);
-http.listen(8000,"0.0.0.0", function () {
+http.listen(8000, "0.0.0.0", function () {
     console.log('listening on *:8000');
     io.on('connection', function (socket) {
     });

@@ -146,12 +146,23 @@ socket.on('reload', function (data) {
     alert("RELOAD");
     
 });
+socket.on('log', function (data) {
+
+    $("#log").html(data);
+
+});
 
 $("#newChar").click(function () {
     
     $("#dialog").dialog();
 
     $("#dialog").dialog();
+    
+});
+$("#vlog").click(function () {
+
+    $("#log").dialog({ height: 500, width:700});
+
 });
 
 $(function () {

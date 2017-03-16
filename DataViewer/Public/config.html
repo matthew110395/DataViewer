@@ -18,7 +18,11 @@
             text-align: center;
             width: 0px;
         }
-
+        #log {
+            height: 50%;
+            overflow: auto; /* Or scroll, depending on your needs*/
+            width: 70%;
+        }
     </style>
 
     <link href="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet" />
@@ -104,7 +108,8 @@
         </div>
 
     </div>
-    <div id="log"></div>
+    <button id="vlog" class="btn btn-success pull-right">Log</button>
+    <div id="log" title="Log" style="white-space: pre-line" hidden></div>
     <script src="js/ace.js"></script>
     <script src="http://localhost:8000/socket.io/socket.io.js"></script>
     <script src="js/jquery-3.1.1.js"></script>
