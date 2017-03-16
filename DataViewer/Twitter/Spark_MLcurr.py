@@ -1,15 +1,16 @@
+
 # -*- coding: utf-8 -*-
 from __future__ import print_function
-#from pyspark import SparkContext
-#from pyspark.sql.types import *
-#from pyspark.sql import Row, SQLContext
-#from pyspark.mllib.linalg import Vectors
-#from pyspark.ml.feature import HashingTF, IDF, Tokenizer
-#from pyspark.mllib.classification import NaiveBayes
-#from pyspark.mllib.classification import NaiveBayesModel
-#from pyspark.mllib.regression import LabeledPoint
-#from pyspark.mllib import linalg as mllib_linalg
-#from pyspark.ml import linalg as ml_linalg
+from pyspark import SparkContext
+from pyspark.sql.types import *
+from pyspark.sql import Row, SQLContext
+from pyspark.mllib.linalg import Vectors
+from pyspark.ml.feature import HashingTF, IDF, Tokenizer
+from pyspark.mllib.classification import NaiveBayes
+from pyspark.mllib.classification import NaiveBayesModel
+from pyspark.mllib.regression import LabeledPoint
+from pyspark.mllib import linalg as mllib_linalg
+from pyspark.ml import linalg as ml_linalg
 import time
 import pandas as pd
 import tweepy
@@ -20,12 +21,31 @@ class MyStreamListener(tweepy.StreamListener):
 
     def on_status(self, status):
         #print(status.text)
-        stat = status.text.replace(',', '')
-        stat = stat.replace('\n',' ')
-        blog = hash(stat)
-        
-        x.execute("""INSERT INTO tweets (tid,created,time_zone,tweet,user,blog) VALUES (%s,%s,%s,%s,%s,%s)""",(status.id,status.created_at,status.user.time_zone,status.text,status.user.name,blog))
-        conn.commit()
+        try:
+          stat = status.text.replace(',', '')
+          stat = stat.replace('\n',' ')
+        except:
+          print('No Characters to Strip')
+          with open("log.txt", "a") as myfile:
+            myfile.write("NO CHARS to Stri[\n")
+          
+        try:
+          blog = hash(stat)
+        except:
+          print('CannotPredict')
+          with open("log.txt", "a") as myfile:
+            myfile.write("Machine Learning Failed\n")
+
+        else:
+          try:
+            x.execute("""INSERT INTO tweets (tid,created,time_zone,tweet,user,blog) VALUES (%s,%s,%s,%s,%s,%s)""",(status.id,status.created_at,status.user.time_zone,status.text,status.user.name,blog))
+          except:
+            print('cannot insert to DB')
+            with open("log.txt", "a") as myfile:
+              myfile.write("Cannot Insert to DB\n")
+
+          else:
+            conn.commit()
 
 
 def as_old(v):
@@ -61,38 +81,45 @@ def hash(s):
     print(val)
     return val
     
-#sc = SparkContext("local[*]", "naivebayes")
+sc = SparkContext("local[*]", "naivebayes")
 sqlContext = SQLContext(sc)
 try:
     rdd = sc.textFile('mlData1.csv')
-except IOError, err:
-    print('Cannot read file',err)
-    input()
 
     
 #tr,ts = rdd.randomSplit([0.7, 0.3])
-rdd = rdd.map(lambda line: line.split(","))
-df = rdd.map(lambda line: Row(tweet = line[0], label = line[1]))
-df=sqlContext.createDataFrame(df)
-tokenizer = Tokenizer(inputCol="tweet", outputCol="words")
-wordsData= tokenizer.transform(df)
-hashingTF = HashingTF(inputCol="words", outputCol="rawFeatures", numFeatures=2000000)
-featurizedData = hashingTF.transform(wordsData)
-idf = IDF(inputCol="rawFeatures", outputCol="features")
-idfModel = idf.fit(featurizedData)
-rescaledData = idfModel.transform(featurizedData)
+    rdd = rdd.map(lambda line: line.split(","))
+    df = rdd.map(lambda line: Row(tweet = line[0], label = line[1]))
+    df=sqlContext.createDataFrame(df)
+    tokenizer = Tokenizer(inputCol="tweet", outputCol="words")
+    wordsData= tokenizer.transform(df)
+    hashingTF = HashingTF(inputCol="words", outputCol="rawFeatures", numFeatures=2000000)
+    featurizedData = hashingTF.transform(wordsData)
+    idf = IDF(inputCol="rawFeatures", outputCol="features")
+    idfModel = idf.fit(featurizedData)
+    rescaledData = idfModel.transform(featurizedData)
 
-temp = rescaledData.rdd.map(lambda line:LabeledPoint(line[0],as_old(line[4])))
-print(temp.take(200))
-training, test = temp.randomSplit([0.9, 0.1])
-model = NaiveBayes.train(training)
+    temp = rescaledData.rdd.map(lambda line:LabeledPoint(line[0],as_old(line[4])))
+    print(temp.take(200))
+    training, test = temp.randomSplit([0.9, 0.1])
+    try:
+      model = NaiveBayes.train(training)
+    except java.lang.OutOfMemoryError:
+      print('ERRRR')
+except:
+    print('Cannot train spark model')
+    exit()
+try:    
 
-pre= test.map(lambda point: (point.label,model.predict(point.features)))
-test_accuracy = pre.filter(lambda (v, p): v == p).count() / float(test.count())
+    pre= test.map(lambda point: (point.label,model.predict(point.features)))
+    test_accuracy = pre.filter(lambda (v, p): v == p).count() / float(test.count())
 
 #print(pre.take(100))
 
 #print(test_accuracy)
+except:
+    print('Cannot test spark model')
+    exit()
 
 print('****************************Spark model Trained************************')
 time.sleep(1)
@@ -112,6 +139,8 @@ api = tweepy.API(auth)
 myStream = tweepy.Stream(auth = api.auth, listener=MyStreamListener())
 
 myStream.filter(track=['whisky'])
+with open("log.txt", "a") as myfile:
+  myfile.write("Cannot create Twitter Stream\n")
 
 
 hash('Medicinal whisky!')
