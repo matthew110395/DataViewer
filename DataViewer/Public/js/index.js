@@ -3,7 +3,7 @@ var socket = io();
 var tweetByDayLab = [];
 var tweetByDayDat = [];
 
-$.getJSON("http://localhost:8000/config.json", function (json) {
+$.getJSON("../config.json", function (json) {
     console.log(json);
     if (json.charts.length < 1) {
         window.location.href = "./config.html";

@@ -1,5 +1,3 @@
-﻿
-
 var express = require('express');
 var app = express();
 var http = require('http').Server(app);
@@ -23,6 +21,7 @@ var spawn = require("child_process").spawn;
 //p.unref();
 var p = spawn("python", ["Twitter/Spark_MLcurr.py"],data = [conf.DBServer,conf.DBUser,conf.DBPass,conf.DBName,conf.tcc,conf.tcs,conf.tat,conf.tats]);
 var notw = 0;
+console.log(data);
 p.stdout.on('data', function (data) {
     notw++;
     
@@ -545,12 +544,14 @@ function updateJSON(data) {
 }
 
 
-app.use(express.static(__dirname + "/public"));
+app.use(express.static(__dirname + "/Public"));
+//app.use(express.static(__dirname + "/../Public"));
 
-app.use('/js', express.static(__dirname + 'public / js'));
-app.use('/css', express.static(__dirname + 'public / css'));
-app.use(app.router);
-http.listen(8000, function () {
+
+app.use('/js', express.static(__dirname + '/Public/js'));
+app.use('/css', express.static(__dirname + '/Public/css'));
+//app.use(app.router);
+http.listen(8000,"0.0.0.0", function () {
     console.log('listening on *:8000');
     io.on('connection', function (socket) {
     });
