@@ -14,14 +14,8 @@ var gulp = require('gulp');
 
 var Q = require('q');
 
-var python = require('child_process').spawn(
-    'python',
-    // second argument is array of parameters, e.g.:
-    ["../Twitter/Spark_MLcurr.py"]
-);
-output=""
-python.stdout.on('data', function (data) { output += data });
-console.log(output);
+var spawn = require("child_process").spawn;
+var p = spawn("python", ["../Twitter/Spark_MLcurr.py"], { detached: true });
 
 
 
