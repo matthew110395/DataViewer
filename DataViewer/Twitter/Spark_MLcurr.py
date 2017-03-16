@@ -83,10 +83,14 @@ def hash(s):
     print(val)
     return val
 
-input  = json.loads(sys.stdin.readlines()[0])
-f = open('myfile.txt', 'w')
-f.write(input)  # python will convert \n to os.linesep
-f.close()  # you can omit in most cases as the destructor will call it
+arr=[]
+#for line in sys.stdin:
+#    print(line)
+#    arr.push(line)    
+#input  = sys.stdin.readline()
+inp = sys.stdin.read()
+inp = json.loads(inp)
+print(inp)
     
 sc = SparkContext("local[*]", "naivebayes")
 sqlContext = SQLContext(sc)
@@ -130,10 +134,10 @@ except:
 
 print('****************************Spark model Trained************************')
 time.sleep(1)
-conn = MySQLdb.connect(host= "matthew95.co.uk",
-                  user="root",
-                  passwd="matt110395",
-                  db="tweets",
+conn = MySQLdb.connect(host= inp[0],
+                  user=inp[1],
+                  passwd=inp[2],
+                  db=inp[3],
                   charset="utf8mb4")
 x = conn.cursor()
 auth = tweepy.OAuthHandler("vZjeejCKE656i8Tf5BFhHqZ3f", "0sIcjwPkbsNDFlO148aVTvf9oTfKGYKk14dGilNxDMaNxABYJC")

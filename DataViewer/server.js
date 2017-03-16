@@ -21,7 +21,7 @@ var spawn = require("child_process").spawn;
 //var spawn = require("child_process").spawn;
 //var p = spawn("python", ["Twitter/Spark_MLcurr.py"], {detached: true, stdio: 'ignore'});
 //p.unref();
-var p = spawn("python", ["Twitter/Spark_MLcurr.py"]),data = [1234];
+var p = spawn("python", ["Twitter/Spark_MLcurr.py"],data = [conf.DBServer,conf.DBUser,conf.DBPass,conf.DBName]);
 
 p.stdout.on('data',function(data){
 
