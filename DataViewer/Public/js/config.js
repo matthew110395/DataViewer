@@ -125,11 +125,12 @@ socket.on('reload', function (data) {
 });
 
 $("#newChar").click(function () {
-    alert("Handler for .click() called.");
+    
     $("#dialog").dialog();
 
     $("#dialog").dialog();
-    });
+});
+
 $(function () {
     $("#dialog").dialog();
     $("#dialog").dialog('close');

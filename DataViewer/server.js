@@ -14,6 +14,16 @@ var gulp = require('gulp');
 
 var Q = require('q');
 
+var python = require('child_process').spawn(
+    'python',
+    // second argument is array of parameters, e.g.:
+    ["../Twitter/Spark_MLcurr.py"]
+);
+output=""
+python.stdout.on('data', function (data) { output += data });
+console.log(output);
+
+
 
 
 var con = mysql.createConnection({
@@ -32,6 +42,8 @@ con.connect(function (err) {
     }
     console.log('Connection established');
 });
+
+
 var noTweets = 0;
 
 function getWordAt(str, pos) {
@@ -233,6 +245,16 @@ function tweetbyday() {
 
 
 io.on('connection', function (socket) {
+
+    socket.on('va', function (sql) {
+        con.query(sql, function (err, datar, fields) {
+            if (err) {
+                socket.emit('sqlval', false);
+            } else {
+                socket.emit('sqlval', true);
+            }
+        });
+    });
  
     console.log("TEST");
     io.emit('temp', 'test1');
