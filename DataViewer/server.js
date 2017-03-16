@@ -22,12 +22,20 @@ var spawn = require("child_process").spawn;
 //var p = spawn("python", ["Twitter/Spark_MLcurr.py"], {detached: true, stdio: 'ignore'});
 //p.unref();
 var p = spawn("python", ["Twitter/Spark_MLcurr.py"],data = [conf.DBServer,conf.DBUser,conf.DBPass,conf.DBName,conf.tcc,conf.tcs,conf.tat,conf.tats]);
-
-p.stdout.on('data',function(data){
-
+var notw = 0;
+p.stdout.on('data', function (data) {
+    notw++;
     
 
     console.log(data.toString());
+});
+p.stdout.on('end', function (data) {
+    if (notw > 20) {
+        console.log("Crawler Restart");
+        p = spawn("python", ["Twitter/Spark_MLcurr.py"], data = [conf.DBServer, conf.DBUser, conf.DBPass, conf.DBName, conf.tcc, conf.tcs, conf.tat, conf.tats]);
+    } else {
+        console.log("Python EXIT Error");
+    }
 });
 p.stdin.write(JSON.stringify(data));
 
@@ -107,7 +115,7 @@ setInterval(function () {
         tempstr = conf.charts[n].csql;
         var firstAs = tempstr.indexOf("AS");
         tempstr = tempstr.slice(firstAs + 2);
-        console.log(tempstr);
+        //console.log(tempstr);
         var secondAs = tempstr.indexOf("AS");
         if (secondAs >= 0) {
             secondAs = secondAs + firstAs + 2;
@@ -147,7 +155,7 @@ setInterval(function () {
                 }
             }
             //console.log(labels);
-            console.log(data);
+            //console.log(data);
 
             send = {
                 labs: labels,
@@ -155,7 +163,7 @@ setInterval(function () {
             };
 
 
-            console.log(values.cname, send);
+            //console.log(values.cname, send);
             io.emit('ready',"");
             io.emit(values.cname, send);
         });
@@ -214,7 +222,7 @@ function refNoTweets() {
     con.query("SELECT Count(tid) AS 'noTw' FROM tweets WHERE right(created,4) = DATE_FORMAT(CURDATE(),'%Y') AND left(created,10)=DATE_FORMAT(CURDATE(),'%a %b %d')", function (err, rows) {
         if (err) throw err;
 
-        console.log('Data received from Db:\n');
+        //console.log('Data received from Db:\n');
         if (noTweets != rows[0].noTw) {
 
             noTweets = rows[0].noTw;
@@ -229,16 +237,16 @@ function tweetbyday() {
     con.query("SELECT Left(created,3) AS 'Day', count(tid) AS noTweets FROM tweets WHERE str_to_date(concat(substring(created,9,2),'-',substring(created,5,3),'-', right(created,4)),'%d-%M-%Y')<=curdate()AND str_to_date(concat(substring(created,9,2),'-',substring(created,5,3),'-', right(created,4)),'%d-%M-%Y')>date_add(curdate(),INTERVAL -7 DAY) GROUP By Left(created,3)", function (err, tws) {
         if (err) throw err;
 
-        console.log('Data received from Db:\n');
-        console.log(tws);
+        //console.log('Data received from Db:\n');
+        //console.log(tws);
         labels = [];
         data = [];
         for (i in tws) {
             labels.push(tws[i].Day);
             data.push(tws[i].noTweets);
         }
-        console.log(labels);
-        console.log(data);
+        //console.log(labels);
+        //console.log(data);
         send = {
             labs: labels,
             dat: data
@@ -265,11 +273,11 @@ io.on('connection', function (socket) {
         });
     });
  
-    console.log("TEST");
+    //console.log("TEST");
     io.emit('temp', 'test1');
     socket.on('append', function (data) {
 
-        console.log(data);
+        //console.log(data);
         updateJSON(data);
         updateJS(data);
         updateHTML(data);
@@ -418,7 +426,7 @@ function remJS(name,type) {
 
 
         
-        console.log(data);
+        //console.log(data);
             //console.log($('#' + dname).closest("canvas"));
         fs.writeFile('./Public/js/index.js', data,
                 function (error) {
@@ -476,7 +484,7 @@ function remJSON(name,type) {
 
 
 
-        console.log(data);
+        //console.log(data);
         //console.log($('#' + dname).closest("canvas"));
         fs.writeFile('./Public/config.json', data,
             function (error) {
