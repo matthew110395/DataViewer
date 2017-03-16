@@ -84,7 +84,9 @@ def hash(s):
     return val
 
 input  = json.loads(sys.stdin.readlines()[0])
-print input
+f = open('myfile.txt', 'w')
+f.write(input)  # python will convert \n to os.linesep
+f.close()  # you can omit in most cases as the destructor will call it
     
 sc = SparkContext("local[*]", "naivebayes")
 sqlContext = SQLContext(sc)

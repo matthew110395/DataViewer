@@ -29,9 +29,9 @@ p.stdout.on('data',function(data){
 
     console.log(data.toString());
 });
-py.stdin.write(JSON.stringify(data));
+p.stdin.write(JSON.stringify(data));
 
-py.stdin.end();
+p.stdin.end();
 
 
 
