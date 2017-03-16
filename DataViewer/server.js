@@ -28,6 +28,9 @@ p.stdout.on('data', function (data) {
 
     console.log(data.toString());
 });
+p.stdout.on('error',function (data){
+console.log(data.toString());
+});
 p.stdout.on('end', function (data) {
     if (notw > 20) {
         console.log("Crawler Restart");
@@ -35,6 +38,10 @@ p.stdout.on('end', function (data) {
     } else {
         console.log("Python EXIT Error");
     }
+    console.log(data);
+});
+p.stderr.on('data',function(data){
+    console.log(data.toString());
 });
 p.stdin.write(JSON.stringify(data));
 

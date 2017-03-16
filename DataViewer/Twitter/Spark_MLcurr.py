@@ -22,29 +22,32 @@ import MySQLdb
 class MyStreamListener(tweepy.StreamListener):
 
     def on_status(self, status):
-        print(status.text)
+        #print(status.text)
         try:
           stat = status.text.replace(',', '')
           stat = stat.replace('\n',' ')
         except:
-          print('No Characters to Strip')
+          #print('No Characters to Strip')
           with open("log.txt", "a") as myfile:
-            myfile.write("NO CHARS to Stri[\n")
+            myfile.write("ERR\tNo Characters to Strip\n")
           
         try:
           blog = hash(stat)
-        except:
-          print('CannotPredict')
           with open("log.txt", "a") as myfile:
-            myfile.write("Machine Learning Failed\n")
+              myfile.write("OK\t" + str(stat.encode('utf-8')) + "," + str(blog) + "\n")
+
+        except:
+          #print('CannotPredict')
+          with open("log.txt", "a") as myfile:
+            myfile.write("ERR\tMachine Learning Failed,"+str(stat.encode('utf-8'))+" \n")
 
         else:
           try:
             x.execute("""INSERT INTO tweets (tid,created,time_zone,tweet,user,blog) VALUES (%s,%s,%s,%s,%s,%s)""",(status.id,status.created_at,status.user.time_zone,status.text,status.user.name,blog))
           except:
-            print('cannot insert to DB')
+            #print('cannot insert to DB')
             with open("log.txt", "a") as myfile:
-              myfile.write("Cannot Insert to DB\n")
+              myfile.write("ERR\tCannot Insert to DB\n")
 
           else:
             conn.commit()
@@ -80,7 +83,7 @@ def hash(s):
     #print(pred.take(100))
     arr = str(pred.take(100))
     val = arr[1]
-    print(val)
+    #print(val)
     return val
 
 arr=[]
@@ -90,7 +93,7 @@ arr=[]
 #input  = sys.stdin.readline()
 inp = sys.stdin.read()
 inp = json.loads(inp)
-print(inp)
+#print(inp)
     
 sc = SparkContext("local[*]", "naivebayes")
 sqlContext = SQLContext(sc)
@@ -111,12 +114,14 @@ try:
     rescaledData = idfModel.transform(featurizedData)
 
     temp = rescaledData.rdd.map(lambda line:LabeledPoint(line[0],as_old(line[4])))
-    print(temp.take(200))
+    #print(temp.take(200))
     training, test = temp.randomSplit([0.9, 0.1])
     try:
       model = NaiveBayes.train(training)
     except java.lang.OutOfMemoryError:
-      print('ERRRR')
+      print('Cannot train spark model')
+      exit()
+
 except:
     print('Cannot train spark model')
     exit()
@@ -134,15 +139,19 @@ except:
 
 print('****************************Spark model Trained************************')
 time.sleep(1)
+#print(inp)
+#print(inp[2])
 conn = MySQLdb.connect(host= inp[0],
                   user=inp[1],
                   passwd=inp[2],
                   db=inp[3],
                   charset="utf8mb4")
+#print("connected db")
 x = conn.cursor()
 auth = tweepy.OAuthHandler(inp[4], inp[5])
+#print("set oath")
 auth.set_access_token(inp[6],inp[7])
-
+#print("set AT")
 
 # Construct the API instance
 api = tweepy.API(auth)
@@ -151,7 +160,7 @@ myStream = tweepy.Stream(auth = api.auth, listener=MyStreamListener())
 
 myStream.filter(track=['whisky'])
 with open("log.txt", "a") as myfile:
-  myfile.write("Cannot create Twitter Stream\n")
+  myfile.write("ERR\tCannot create Twitter Stream\n")
 
 
 hash('Medicinal whisky!')
