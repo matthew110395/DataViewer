@@ -33,7 +33,16 @@ $.getJSON("http://localhost:8000/config.json", function (json) {
     $('#dname').val(json.DBName);
     $('#uname').val(json.DBUser);
     $('#pass').val(json.DBPass);
-
+    //$('#tcheck').val(json.tcheck);
+    if (json.tcheck == "1") {
+        $('#tcheck').prop('checked', true);
+    } else {
+        $('#tcheck').prop('checked', false);
+    }
+    $('#tconsKey').val(json.tcc);
+    $('#tconsSec').val(json.tcs);
+    $('#taccesst').val(json.tat);
+    $('#taccessts').val(json.tats);
 });
 
 function DBup() {
@@ -41,12 +50,26 @@ function DBup() {
     name = $('#dname').val();
     uname = $('#uname').val();
     pass = $('#pass').val();
+    if ($('#tcheck').prop("checked")) {
+        twitter = "1";
+    } else {
+        twitter = "0";
+    }
+    tconskey = $('#tconsKey').val();
+    tconssec = $('#tconsSec').val();
+    taccesst = $('#taccesst').val();
+    taccesssec = $('#taccessts').val();
 
     dbdet = {
         server: serv,
         dname: name,
         user: uname,
-        password: pass
+        password: pass,
+        twitter: twitter,
+        tconskey: tconskey,
+        tconssec: tconssec,
+        taccesst: taccesst,
+        taccesssec: taccesssec
     };
 
     socket.emit('DBUP', dbdet);

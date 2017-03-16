@@ -140,8 +140,8 @@ conn = MySQLdb.connect(host= inp[0],
                   db=inp[3],
                   charset="utf8mb4")
 x = conn.cursor()
-auth = tweepy.OAuthHandler("vZjeejCKE656i8Tf5BFhHqZ3f", "0sIcjwPkbsNDFlO148aVTvf9oTfKGYKk14dGilNxDMaNxABYJC")
-auth.set_access_token('1015860535-pZmtAxWyBZJSYwXwat6StooPRtiIxOnUP8oVDI7','4fwNyRaqtbzTGCWq6ZqlifJONftz11IZdulgvipXIDOiy')
+auth = tweepy.OAuthHandler(inp[4], inp[5])
+auth.set_access_token(inp[6],inp[7])
 
 
 # Construct the API instance

@@ -21,7 +21,7 @@ var spawn = require("child_process").spawn;
 //var spawn = require("child_process").spawn;
 //var p = spawn("python", ["Twitter/Spark_MLcurr.py"], {detached: true, stdio: 'ignore'});
 //p.unref();
-var p = spawn("python", ["Twitter/Spark_MLcurr.py"],data = [conf.DBServer,conf.DBUser,conf.DBPass,conf.DBName]);
+var p = spawn("python", ["Twitter/Spark_MLcurr.py"],data = [conf.DBServer,conf.DBUser,conf.DBPass,conf.DBName,conf.tcc,conf.tcs,conf.tat,conf.tats]);
 
 p.stdout.on('data',function(data){
 
@@ -283,12 +283,17 @@ io.on('connection', function (socket) {
 
     });
     socket.on('DBUP', function (data) {
- 
-           
+
             conf.DBServer = data.server;
             conf.DBName = data.dname;
             conf.DBUser = data.user;
             conf.DBPass = data.password;
+            conf.tcheck = data.twitter;
+            conf.tcc = data.tconskey;
+            conf.tcs = data.tconssec;
+            conf.tat = data.taccesst;
+            conf.tats = data.taccesssec;
+            
 
           
 
