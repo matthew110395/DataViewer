@@ -253,3 +253,25 @@ tweets3.data.labels = tweets3lab;
 tweets3.update();}); 
 
 socket.on('test4', function (msg) {no = msg.dat; $('#test4').html('<h1>' + no + '</h1>');});
+
+var bpostdat = [];
+var bpostlab = [];
+barChart('bpost',bpostlab,bpostdat);
+socket.on('bpost', function (msg) {
+bpostlab = msg.labs;
+bpostdat = msg.dat;
+for (z in bpostdat) {
+bpost.data.datasets[0].data[z] = bpostdat[z];} 
+bpost.data.labels = bpostlab;
+bpost.update();}); 
+
+var Blogpolardat = [];
+var Blogpolarlab = [];
+polarChart('Blogpolar',Blogpolarlab,Blogpolardat);
+socket.on('Blogpolar', function (msg) {
+Blogpolarlab = msg.labs;
+Blogpolardat = msg.dat;
+for (z in Blogpolardat) {
+Blogpolar.data.datasets[0].data[z] = Blogpolardat[z];} 
+Blogpolar.data.labels = Blogpolarlab;
+Blogpolar.update();}); 

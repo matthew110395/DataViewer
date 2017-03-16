@@ -19,6 +19,7 @@ var spawn = require("child_process").spawn;
 //var spawn = require("child_process").spawn;
 //var p = spawn("python", ["Twitter/Spark_MLcurr.py"], {detached: true, stdio: 'ignore'});
 //p.unref();
+if(conf.tcheck =="1"){
 var p = spawn("python", ["Twitter/Spark_MLcurr.py"], data = [conf.DBServer, conf.DBUser, conf.DBPass, conf.DBName, conf.tcc, conf.tcs, conf.tat, conf.tats]);
 var notw = 0;
 console.log(data);
@@ -47,7 +48,7 @@ p.stdin.write(JSON.stringify(data));
 
 p.stdin.end();
 
-
+}
 
 var con = mysql.createConnection({
     host: conf.DBServer,

@@ -5,7 +5,7 @@ var names = [];
 var jin = {}
 
 
-$.getJSON("http://localhost:8000/config.json", function (json) {
+$.getJSON("http://10.0.0.71:8000/config.json", function (json) {
     // this will show the info it in firebug console
     jin = json;
     for (x in json.charts) {
