@@ -26,13 +26,15 @@ function nextDiv() {
     return next;
 }
 
-//setInterval(function () {
-//    var date = new Date();
+setInterval(function () {
+    var date = new Date();
+    var minutes = date.getMinutes();
+    if (minutes < 10) { minutes = "0" + minutes; }
 
-//    var time = date.getHours() + ":" + date.getMinutes();
+    var time = date.getHours() + ":" + minutes;
 
-//    $('#time').html(time);
-//}, 1000);
+    $('#time').html(time);
+}, 1000);
 
 
 

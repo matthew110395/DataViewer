@@ -6,11 +6,8 @@
     <title></title>
 
     <style type="text/css" media="screen">
-        .ace_editor {
-            border: 1px solid lightgray;
-            margin: auto;
-            height: 100px;
-            width: 30%;
+        #vsql {
+            display: inline-block;
         }
 
         .scrollmargin {
@@ -23,6 +20,14 @@
             overflow: auto; /* Or scroll, depending on your needs*/
             width: 70%;
         }
+        #vlog{
+            margin-right:1%;
+        }
+        .bottom-right {
+            position: absolute;
+            bottom: 0;
+            right: 0;
+        }
     </style>
 
     <link href="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet" />
@@ -31,7 +36,8 @@
     <link href="css/jquery-ui.css" rel="stylesheet" />
 </head>
 <body>
-    <h1>Data Viewer</h1>
+    <h1 class="col-md-6">Data Viewer</h1>
+    <h1 id="time" class="col-md-6 text-right"></h1>
     <div id="dialog" title="New Chart" hidden>
 
         <form id="newChart">
@@ -99,8 +105,9 @@
             </form>
         </div>
         <br />
-
+        
         <button id="newChar" class="btn btn-success pull-right">New Chart</button>
+        <button id="vlog" class="btn btn-info pull-right">Log</button>
         <br />
         
         <h2>Current Charts</h2>
@@ -108,7 +115,10 @@
         </div>
 
     </div>
-    <button id="vlog" class="btn btn-success pull-right">Log</button>
+    <div class="bottom-right">
+        <button type="button" onclick="window.location = './index.html';" class="btn btn-primary btn-large btn-skip">Dashboard</button>
+    </div>
+    
     <div id="log" title="Log" style="white-space: pre-line" hidden></div>
     <script src="js/ace.js"></script>
     <script src="http://localhost:8000/socket.io/socket.io.js"></script>
