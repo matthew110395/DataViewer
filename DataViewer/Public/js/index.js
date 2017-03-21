@@ -213,22 +213,22 @@ Test.data.datasets[0].data[z] = Testdat[z];}
 Test.data.labels = Testlab;
 Test.update();}); 
 
-socket.on('Tet', function (msg) {no = msg.dat; $('#Tet').html('<h1>' + no + '</h1>');});
-
-socket.on('TETSTT', function (msg) { no = msg.dat; $('#TETSTT').html('<h1>' + no + '</h1>'); });
 
 
+socket.on('TETSTT', function (msg) {no = msg.dat; $('#TETSTT').html('<h1>' + no + '</h1>');});
 
-var Tweetsdat = [];
-var Tweetslab = [];
-barChart('Tweets',Tweetslab,Tweetsdat);
-socket.on('Tweets', function (msg) {
-Tweetslab = msg.labs;
-Tweetsdat = msg.dat;
-for (z in Tweetsdat) {
-Tweets.data.datasets[0].data[z] = Tweetsdat[z];} 
-Tweets.data.labels = Tweetslab;
-Tweets.update();}); 
+
+
+
+
+
+
+
+
+
+ 
+
+ 
 
 var Tweets2dat = [];
 var Tweets2lab = [];
@@ -241,16 +241,16 @@ Tweets2.data.datasets[0].data[z] = Tweets2dat[z];}
 Tweets2.data.labels = Tweets2lab;
 Tweets2.update();}); 
 
-var tweets3dat = [];
-var tweets3lab = [];
-lineChart('tweets3',tweets3lab,tweets3dat);
-socket.on('tweets3', function (msg) {
-tweets3lab = msg.labs;
-tweets3dat = msg.dat;
-for (z in tweets3dat) {
-tweets3.data.datasets[0].data[z] = tweets3dat[z];} 
-tweets3.data.labels = tweets3lab;
-tweets3.update();}); 
+
+
+
+
+
+
+
+ 
+
+ 
 
 socket.on('test4', function (msg) {no = msg.dat; $('#test4').html('<h1>' + no + '</h1>');});
 
@@ -263,15 +263,4 @@ bpostdat = msg.dat;
 for (z in bpostdat) {
 bpost.data.datasets[0].data[z] = bpostdat[z];} 
 bpost.data.labels = bpostlab;
-bpost.update();}); 
-
-var Blogpolardat = [];
-var Blogpolarlab = [];
-polarChart('Blogpolar',Blogpolarlab,Blogpolardat);
-socket.on('Blogpolar', function (msg) {
-Blogpolarlab = msg.labs;
-Blogpolardat = msg.dat;
-for (z in Blogpolardat) {
-Blogpolar.data.datasets[0].data[z] = Blogpolardat[z];} 
-Blogpolar.data.labels = Blogpolarlab;
-Blogpolar.update();}); 
+bpost.update();});

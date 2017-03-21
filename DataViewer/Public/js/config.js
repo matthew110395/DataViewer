@@ -5,12 +5,12 @@ var names = [];
 var jin = {}
 
 
-$.getJSON("http://10.0.0.71:8000/config.json", function (json) {
+$.getJSON("/config.json", function (json) {
     // this will show the info it in firebug console
     jin = json;
     for (x in json.charts) {
         chartName.push(json.charts[x].name);
-        $('#accordian').append('<h3>' + json.charts[x].name + "</h3><div class='wrap'><h5>" + json.charts[x].type + "</h5><div id='edit" + json.charts[x].name + "'></div><button type='button' id='submit' onclick=" + '"' + "remove('" + json.charts[x].name + "','" + json.charts[x].type + "')" + '"' + " class='ui-button ui-widget ui-corner-all'>Delete</button></div>");
+        $('#accordian').append('<h3>' + json.charts[x].name + "</h3><div class='wrap'><h5>" + json.charts[x].type + "</h5><div id='edit" + json.charts[x].name + "'></div><button type='button' id='submit' onclick=" + '"' + "remove('" + json.charts[x].name + "','" + json.charts[x].type + "','" + json.charts[x].title + "')" + '"' + " class='ui-button ui-widget ui-corner-all'>Delete</button></div>");
         //$('#accordian').append("<h5>" + json.charts[x].type + '</h5>');
         //$('#accordian').append("<div id='edit" + json.charts[x].name + "'></div></div>");
         window[json.charts[x].name] = ace.edit('edit' + json.charts[x].name);
@@ -107,12 +107,13 @@ function addTo() {
         location.reload();
     }
 }
-function remove(cname,ctype) {
+function remove(cname,ctype,ctitle) {
     console.log(cname);
     obj = {
         name: cname,
         type: ctype,
-
+        ctitle: ctitle
+       
     };
     socket.emit('remove', obj);
 }

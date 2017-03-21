@@ -290,11 +290,11 @@ io.on('connection', function (socket) {
         updateHTML(data);
 
     });
-    socket.on('remove', function (data) {
+    socket.on('remove', function (datao) {
 
-        remHTML(data.name, data.type, data.title);
-        remJSON(data.name, data.type, data.sql);
-        remJS(data.name, data.type);
+        remHTML(datao.name, datao.type, datao.ctitle);
+        remJSON(datao.name, datao.type, datao.ctitle);
+        remJS(datao.name, datao.type);
 
     });
     socket.on('DBUP', function (data) {
@@ -344,19 +344,20 @@ function updateJS(data) {
 }
 
 
-function remHTML(data, typ, title) {
+function remHTML(data, type, title) {
     dname = data;
     fs.readFile('./Public/index.html', 'utf8', function (error, data) {
         jsdom.env(data, [], function (errors, window) {
             var $ = require('jquery')(window);
             if (type == 'Text') {
-                data = data.replace("<div class='display'><h3>" + title + "</h3><br/><h1 id='" + dname + "'>0</h1></div>\n", '');
-
+                data = data.replace('<div class="display"><h3>' + title + '</h3><br><h1 id="' + dname + '">0</h1></div>', '');
+                console.log('<div class="display"><h3>' + title + '</h3><br><h1 id="' + dname + '">0</h1></div>\n', '');
             } else if (type == 'Polar') {
                 style = "width:98%; height:98%"
-                data = data.replace("<div class='display'><h3>" + title + "</h3><canvas id='" + dname + "' style ='width:98%; height:98%'></canvas></div>\n", '');
+                data = data.replace('<div class="display"><h3>' + title + '</h3><canvas id="' + dname + '" style="width:98%; height:98%"></canvas></div>\n', '');
+                console.log('\n<div class="display"><h3>' + title + '</h3><canvas id="' + dname + '" style ="width:98%; height:98%"></canvas></div>\n', '');
             } else {
-                data = data.replace("<div class='display'><h3>" + title + "</h3><canvas id='" + dname + "'></canvas></div>\n", '');
+                data = data.replace('<div class="display"><h3>' + title + '</h3><canvas id="' + dname + '"></canvas></div>\n', '');
             }
             //console.log($('#' + dname).closest("canvas"));
             fs.writeFile('./Public/index.html', data,
@@ -371,7 +372,7 @@ function remJS(name, type) {
     //Look at add and remove, dependant on type
     var text = [];
     if (type === "Text") {
-        text.push("socket.on('" + name + "', function (msg) { no = msg.dat; $('#" + name + "').html('<h1>' + no + '</h1>'); });");
+        text.push("socket.on('" + name + "', function (msg) {no = msg.dat; $('#" + name + "').html('<h1>' + no + '</h1>');});");
 
     } else if (type === "Bar") {
         text.push('var ' + name + 'dat = [];');
@@ -425,6 +426,7 @@ function remJS(name, type) {
     fs.readFile('./Public/js/index.js', 'utf8', function (error, data) {
         var regex = new RegExp('var ' + name + 'dat = [];[\s\S] *?' + name + '.update();', "m");
         for (x in text) {
+            console.log(text[x]);
             data = data.replace(text[x], '');
         }
         //data = data.replace(new RegExp('(\n){3,}', 'gim'), '\n
@@ -460,7 +462,7 @@ function remarr(arr, name, value) {
     });
     return arr;
 }
-function remJSON(name, type) {
+function remJSON(name, type, ctitle) {
     //$.getJSON("/config.json", function (data) {
     //    data.charts.push(data);
     //});
@@ -474,12 +476,12 @@ function remJSON(name, type) {
     var text = [];
 
 
-    text.push('{"name":"' + name + '","type":"' + type + '","csql":"' + sql + '"},');
-    text.push(',{"name":"' + name + '","type":"' + type + '","csql":"' + sql + '"}');
-    text.push('{"name":"' + name + '","type":"' + type + '","csql":"' + sql + '"}');
-    text.push(',{"csql":"' + sql + '","name":"' + name + '","type":"' + type + '"}');
-    text.push('{"csql":"' + sql + '","name":"' + name + '","type":"' + type + '"},');
-    text.push('{"csql":"' + sql + '","name":"' + name + '","type":"' + type + '"}');
+    text.push('{"name":"' + name + '","type":"' + type + '","csql":"' + sql + '","title":"' + ctitle + '"},');
+    text.push(',{"name":"' + name + '","type":"' + type + '","csql":"' + sql + '","title":"' + ctitle + '"}');
+    text.push('{"name":"' + name + '","type":"' + type + '","csql":"' + sql + '","title":"' + ctitle + '"}');
+    text.push(',{"csql":"' + sql + '","name":"' + name + '","type":"' + type + '","title":"' + ctitle + '"}');
+    text.push('{"csql":"' + sql + '","name":"' + name + '","type":"' + type + '","title":"' + ctitle + '"},');
+    text.push('{"csql":"' + sql + '","name":"' + name + '","type":"' + type + '","title":"' + ctitle + '"}');
 
 
 
@@ -523,7 +525,7 @@ function updateHTML(data) {
                 if (data.type === "Text") {
                     $(this).append("\n<div class='display'><h3>" + title + "</h3><br><h1 id='" + name + "'>0</h1></div>\n ");
                 } else if (data.type === "Polar") {
-                    $(this).append("\n\n<div class='display'><h3>" + title + "</h3><canvas id='" + name + "' style='width:98%; height:98%'></canvas></div>\n ");
+                    $(this).append("\n<div class='display'><h3>" + title + "</h3><canvas id='" + name + "' style='width:98%; height:98%'></canvas></div>\n ");
 
                 } else {
                     $(this).append("\n<div class='display'><h3>" + title + "</h3><canvas id='" + name + "'></canvas></div>\n ");

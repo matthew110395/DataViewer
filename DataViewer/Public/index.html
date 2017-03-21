@@ -1,39 +1,40 @@
-<html xmlns="http://www.w3.org/1999/xhtml"><head>
+﻿<html xmlns="http://www.w3.org/1999/xhtml"><head>
     <meta charset="utf-8">
     <title></title>
     <link href="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet">
     <link href="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css" rel="stylesheet">
     <style>
-        #cont{
-            width:70%;
-            height:40%;
+        #cont {
+            width: 70%;
+            height: 40%;
         }
-        h3{
-            text-align:center;
+
+        h3 {
+            text-align: center;
         }
+
         .container-fluid h3 {
             font-size: 300%;
-            
         }
-        .container-fluid
-        h1{
-            font-size:300%;
-            font-weight:bold;
-             position: absolute;
-  margin: auto;
-  top: -10%;
-  right: 0;
-  bottom: 0;
-  left: 0;
-  height: 10%;
 
-  text-align:center;
-}
-        .bottom-right{
-  position: absolute;
-  bottom: 0;
-  right: 0;
-}
+        .container-fluid h1 {
+            font-size: 300%;
+            font-weight: bold;
+            position: absolute;
+            margin: auto;
+            top: -10%;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            height: 10%;
+            text-align: center;
+        }
+
+        .bottom-right {
+            position: absolute;
+            bottom: 0;
+            right: 0;
+        }
 
         #loading-wrapper {
             position: fixed;
@@ -41,8 +42,8 @@
             height: 100%;
             left: 0;
             top: 0;
-            background-color:white;
-            z-index:1;
+            background-color: white;
+            z-index: 1;
         }
 
         #loading-text {
@@ -124,11 +125,13 @@
                 -moz-animation: loader 2s linear infinite;
                 -o-animation: loader 2s linear infinite;
             }
+
         @keyframes blinker {
             50% {
                 opacity: 0;
             }
         }
+
         @-webkit-keyframes loaders {
             0% {
                 -webkit-transform: rotate(0deg);
@@ -156,13 +159,12 @@
                 transform: rotate(360deg);
             }
         }
-        #main{
-            width:100%;
-            height:100%;
-            overflow:hidden;
+
+        #main {
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
         }
-
-
     </style>
 </head>
 <body>
@@ -171,71 +173,65 @@
         <div id="loading-content"></div>
     </div>
     <div id="main">
-    <h1 class="col-md-6">Data Viewer</h1>
+        <h1 class="col-md-6">Data Viewer</h1>
 
-    <h1 id="time" class="col-md-6 text-right"></h1>
-    <div id="cont" class="container-fluid">
-        <div>
-            <br>
-            <br>
-            <br>
-            <br>
-        <div id="slide" style="max-height:80%" class="container-fluid">
-            
-            
-<div class="display"><h3>Tweets By Day</h3><canvas id="Tweets"></canvas></div>
- 
-<div class="display"><h3>Tweets Polar</h3><canvas id="Tweets2" style="width:98%; height:98%"></canvas></div>
- 
-<div class="display"><h3>Tweets Line</h3><canvas id="tweets3"></canvas></div>
- 
-<div class="display"><h3>test</h3><br><h1 id="test4">0</h1></div>
- 
-<div class="display"><h3>Employees by Department</h3><canvas id="edept"></canvas></div>
- 
-<div class="display"><h3>Blog Posts</h3><canvas id="bpost"></canvas></div>
- 
-
-<div class="display"><h3>Blogger Polar</h3><canvas id="Blogpolar" style="width:98%; height:98%"></canvas></div>
- </div>
+        <h1 id="time" class="col-md-6 text-right"></h1>
+        <div id="cont" class="container-fluid">
+            <div>
+                <br>
+                <br>
+                <br>
+                <br>
+                <div id="slide" style="max-height:80%" class="container-fluid">
 
 
-     
-        
-<div class="display"><h3>mattgew</h3><canvas id="Test"></canvas></div>
- 
-<div class="display"><h3>mattgew</h3><br><h1 id="Tet">0</h1></div>
- 
-<div class="display"><h3>mattgew</h3><br><h1 id="TETSTT">0</h1></div>
- </div>
+                    
+                    <div class="display"><h3>Tweets Polar</h3><canvas id="Tweets2" style="width:98%; height:98%"></canvas></div>
+
+                    
+                    <div class="display"><h3>test</h3><br><h1 id="test4">0</h1></div>
+
+                    <div class="display"><h3>Blog Posts</h3><canvas id="bpost"></canvas></div>
+
+                    
+
+                    <div class="display"><h3>mattgew</h3><canvas id="Test"></canvas></div>
+
+
+
+                    <div class="display"><h3>mattgew</h3><br><h1 id="TETSTT">0</h1></div>
+                
+  </div>
+            </div>
         </div>
-    <div class="bottom-right">
-    <button type="button" onclick="window.location = './config.html';" class="btn btn-primary btn-large btn-skip">Config</button>
+        <div class="bottom-right">
+            <button type="button" onclick="window.location = './config.html';" class="btn btn-primary btn-large btn-skip">Config</button>
         </div>
-    <script src="js/jquery-3.1.1.js"></script>
+        <script src="js/jquery-3.1.1.js"></script>
 
         <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.js
 "></script>
-        <script src="http://10.0.0.71:8000/socket.io/socket.io.js"></script>
-    <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+        <script src="http://localhost:8000/socket.io/socket.io.js"></script>
+        <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
         <script src="js/index.js"></script>
-    <script type="text/javascript">
-        //Rotate through divs which have an id beinging with chart
-        //var divs = $('div[id^="chart"]').hide(),
-        setTimeout(function () {
-            var divs = $('.display').hide(),
-                i = 0;
+        <script type="text/javascript">
+            //Rotate through divs which have an id beinging with chart
+            //var divs = $('div[id^="chart"]').hide(),
+            setTimeout(function () {
+                var divs = $('.display').hide(),
+                    i = 0;
 
-            (function cycle() {
+                (function cycle() {
 
-                divs.eq(i).fadeIn(400)
-                    .delay(10000)
-                    .fadeOut(400, cycle);
+                    divs.eq(i).fadeIn(400)
+                        .delay(10000)
+                        .fadeOut(400, cycle);
 
-                i = ++i % divs.length;
+                    i = ++i % divs.length;
 
-            })();
-        },1000);
-    </script>
-        </div>
+                })();
+            }, 1000);
+        </script>
+    </div>
+
 </body></html>
