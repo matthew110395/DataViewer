@@ -8,7 +8,8 @@ var conf = require('./Public/config.json');
 var jsdom = require("jsdom");
 var condense = require('gulp-condense');
 var gulp = require('gulp');
-
+var favicon = require('serve-favicon')
+var path = require('path')
 
 var Q = require('q');
 
@@ -627,6 +628,8 @@ app.use(express.static(__dirname + "/Public"));
 
 app.use('/js', express.static(__dirname + '/Public/js'));
 app.use('/css', express.static(__dirname + '/Public/css'));
+app.use(favicon(path.join(__dirname + '/Public/favicon.ico')))
+
 //app.use(app.router);
 http.listen(8000, "0.0.0.0", function () {
     console.log('listening on *:8000');
