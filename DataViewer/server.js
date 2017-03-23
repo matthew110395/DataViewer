@@ -338,6 +338,15 @@ function updateJS(data) {
     else if (data.type === "Line") {
         text = "\nvar " + name + "dat = [];\nvar " + name + "lab = [];\nlineChart('" + name + "'," + name + "lab," + name + "dat);\nsocket.on('" + name + "', function (msg) {\n" + name + "lab = msg.labs;\n" + name + "dat = msg.dat;\nfor (z in " + name + "dat) {\n" + name + ".data.datasets[0].data[z] = " + name + "dat[z];} \n" + name + ".data.labels = " + name + "lab;\n" + name + ".update();}); \n";
     }
+    else if (data.type === "Pie") {
+        text = "\nvar " + name + "dat = [];\nvar " + name + "lab = [];\npieChart('" + name + "'," + name + "lab," + name + "dat);\nsocket.on('" + name + "', function (msg) {\n" + name + "lab = msg.labs;\n" + name + "dat = msg.dat;\nfor (z in " + name + "dat) {\n" + name + ".data.datasets[0].data[z] = " + name + "dat[z];} \n" + name + ".data.labels = " + name + "lab;\n" + name + ".update();}); \n";
+    }
+    else if (data.type === "Radar") {
+        text = "\nvar " + name + "dat = [];\nvar " + name + "lab = [];\nradarChart('" + name + "'," + name + "lab," + name + "dat);\nsocket.on('" + name + "', function (msg) {\n" + name + "lab = msg.labs;\n" + name + "dat = msg.dat;\nfor (z in " + name + "dat) {\n" + name + ".data.datasets[0].data[z] = " + name + "dat[z];} \n" + name + ".data.labels = " + name + "lab;\n" + name + ".update();}); \n";
+    }
+    else if (data.type === "Doughnut") {
+        text = "\nvar " + name + "dat = [];\nvar " + name + "lab = [];\ndoughnutChart('" + name + "'," + name + "lab," + name + "dat);\nsocket.on('" + name + "', function (msg) {\n" + name + "lab = msg.labs;\n" + name + "dat = msg.dat;\nfor (z in " + name + "dat) {\n" + name + ".data.datasets[0].data[z] = " + name + "dat[z];} \n" + name + ".data.labels = " + name + "lab;\n" + name + ".update();}); \n";
+    }
     fs.appendFile('./Public/js/index.js', text, function (err) {
         console.log(err);
     });
@@ -352,7 +361,7 @@ function remHTML(data, type, title) {
             if (type == 'Text') {
                 data = data.replace('<div class="display"><h3>' + title + '</h3><br><h1 id="' + dname + '">0</h1></div>', '');
                 console.log('<div class="display"><h3>' + title + '</h3><br><h1 id="' + dname + '">0</h1></div>\n', '');
-            } else if (type == 'Polar') {
+            } else if (type == 'Polar' || type == 'Radar') {
                 style = "width:98%; height:98%"
                 data = data.replace('<div class="display"><h3>' + title + '</h3><canvas id="' + dname + '" style="width:98%; height:98%"></canvas></div>\n', '');
                 console.log('\n<div class="display"><h3>' + title + '</h3><canvas id="' + dname + '" style ="width:98%; height:98%"></canvas></div>\n', '');
@@ -397,6 +406,48 @@ function remJS(name, type) {
         text.push('var ' + name + 'dat = [];');
         text.push('var ' + name + 'lab = [];');
         text.push("polarChart('" + name + "'," + name + "lab," + name + "dat);");
+        text.push("socket.on('" + name + "', function (msg) {");
+        text.push(name + 'lab = msg.labs;');
+        text.push(name + 'dat = msg.dat;');
+        text.push('for (z in ' + name + 'dat) {');
+        text.push(name + '.data.datasets[0].data[z] = ' + name + 'dat[z];}');
+        text.push(name + '.data.labels = ' + name + 'lab;');
+        text.push(name + '.update();});');
+
+        //text = "\nvar " + name + "dat = [];\nvar " + name + "lab = [];\npolarChart('" + name + "'," + name + "lab," + name + "dat);\nsocket.on('" + name + "', function (msg) {\n" + name + "lab = msg.labs;\n" + name + "dat = msg.dat;\nfor (z in " + name + "dat) {\n" + name + ".data.datasets[0].data[z] = " + name + "dat[z];\n} \n" + name + ".data.labels = " + name + "lab;\n" + name + ".update();\n}); \n";
+    }
+    else if (type === "Pie") {
+        text.push('var ' + name + 'dat = [];');
+        text.push('var ' + name + 'lab = [];');
+        text.push("pieChart('" + name + "'," + name + "lab," + name + "dat);");
+        text.push("socket.on('" + name + "', function (msg) {");
+        text.push(name + 'lab = msg.labs;');
+        text.push(name + 'dat = msg.dat;');
+        text.push('for (z in ' + name + 'dat) {');
+        text.push(name + '.data.datasets[0].data[z] = ' + name + 'dat[z];}');
+        text.push(name + '.data.labels = ' + name + 'lab;');
+        text.push(name + '.update();});');
+
+        //text = "\nvar " + name + "dat = [];\nvar " + name + "lab = [];\npolarChart('" + name + "'," + name + "lab," + name + "dat);\nsocket.on('" + name + "', function (msg) {\n" + name + "lab = msg.labs;\n" + name + "dat = msg.dat;\nfor (z in " + name + "dat) {\n" + name + ".data.datasets[0].data[z] = " + name + "dat[z];\n} \n" + name + ".data.labels = " + name + "lab;\n" + name + ".update();\n}); \n";
+    }
+    else if (type === "Doughnut") {
+        text.push('var ' + name + 'dat = [];');
+        text.push('var ' + name + 'lab = [];');
+        text.push("doughnutChart('" + name + "'," + name + "lab," + name + "dat);");
+        text.push("socket.on('" + name + "', function (msg) {");
+        text.push(name + 'lab = msg.labs;');
+        text.push(name + 'dat = msg.dat;');
+        text.push('for (z in ' + name + 'dat) {');
+        text.push(name + '.data.datasets[0].data[z] = ' + name + 'dat[z];}');
+        text.push(name + '.data.labels = ' + name + 'lab;');
+        text.push(name + '.update();});');
+
+        //text = "\nvar " + name + "dat = [];\nvar " + name + "lab = [];\npolarChart('" + name + "'," + name + "lab," + name + "dat);\nsocket.on('" + name + "', function (msg) {\n" + name + "lab = msg.labs;\n" + name + "dat = msg.dat;\nfor (z in " + name + "dat) {\n" + name + ".data.datasets[0].data[z] = " + name + "dat[z];\n} \n" + name + ".data.labels = " + name + "lab;\n" + name + ".update();\n}); \n";
+    }
+    else if (type === "Radar") {
+        text.push('var ' + name + 'dat = [];');
+        text.push('var ' + name + 'lab = [];');
+        text.push("radarChart('" + name + "'," + name + "lab," + name + "dat);");
         text.push("socket.on('" + name + "', function (msg) {");
         text.push(name + 'lab = msg.labs;');
         text.push(name + 'dat = msg.dat;');
@@ -524,7 +575,7 @@ function updateHTML(data) {
                 var content = $(this);
                 if (data.type === "Text") {
                     $(this).append("\n<div class='display'><h3>" + title + "</h3><br><h1 id='" + name + "'>0</h1></div>\n ");
-                } else if (data.type === "Polar") {
+                } else if (data.type === "Polar" || data.type === "Radar") {
                     $(this).append("\n<div class='display'><h3>" + title + "</h3><canvas id='" + name + "' style='width:98%; height:98%'></canvas></div>\n ");
 
                 } else {

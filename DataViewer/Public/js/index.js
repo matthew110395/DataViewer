@@ -1,4 +1,4 @@
-﻿var noTweets = 0
+var noTweets = 0
 var socket = io();
 var tweetByDayLab = [];
 var tweetByDayDat = [];
@@ -108,12 +108,12 @@ function barChart(name, lab, dat) {
 }
 
 
-function polarChart(name, lab, dat) {
+function pieChart(name, lab, dat) {
 
         var ctx;
         ctx = document.getElementById(name);
         window[name] = new Chart(ctx, {
-            type: 'polarArea',
+            type: 'pie',
             data: {
                 labels: lab,
                 datasets: [{
@@ -147,6 +147,128 @@ function polarChart(name, lab, dat) {
             }
         });
     
+}
+function doughnutChart(name, lab, dat) {
+
+    var ctx;
+    ctx = document.getElementById(name);
+    window[name] = new Chart(ctx, {
+        type: 'doughnut',
+        data: {
+            labels: lab,
+            datasets: [{
+                label: 'Tweets',
+                data: dat,
+                backgroundColor: [
+                    'rgba(255, 99, 132, 0.2)',
+                    'rgba(54, 162, 235, 0.2)',
+                    'rgba(255, 206, 86, 0.2)',
+                    'rgba(75, 192, 192, 0.2)',
+                    'rgba(153, 102, 255, 0.2)',
+                    'rgba(255, 159, 64, 0.2)'
+                ],
+                borderColor: [
+                    'rgba(255,99,132,1)',
+                    'rgba(54, 162, 235, 1)',
+                    'rgba(255, 206, 86, 1)',
+                    'rgba(75, 192, 192, 1)',
+                    'rgba(153, 102, 255, 1)',
+                    'rgba(255, 159, 64, 1)'
+                ],
+                borderWidth: 1
+            }]
+        },
+        options: {
+
+            resposive: true,
+            maintainAspectRatio: false
+
+
+        }
+    });
+
+}
+function radarChart(name, lab, dat) {
+
+    var ctx;
+    ctx = document.getElementById(name);
+    window[name] = new Chart(ctx, {
+        type: 'radar',
+        data: {
+            labels: lab,
+            datasets: [{
+                label: 'Tweets',
+                data: dat,
+                backgroundColor: [
+                    'rgba(255, 99, 132, 0.2)',
+                    'rgba(54, 162, 235, 0.2)',
+                    'rgba(255, 206, 86, 0.2)',
+                    'rgba(75, 192, 192, 0.2)',
+                    'rgba(153, 102, 255, 0.2)',
+                    'rgba(255, 159, 64, 0.2)'
+                ],
+                borderColor: [
+                    'rgba(255,99,132,1)',
+                    'rgba(54, 162, 235, 1)',
+                    'rgba(255, 206, 86, 1)',
+                    'rgba(75, 192, 192, 1)',
+                    'rgba(153, 102, 255, 1)',
+                    'rgba(255, 159, 64, 1)'
+                ],
+                borderWidth: 1
+            }]
+        },
+        options: {
+
+            resposive: true,
+            maintainAspectRatio: false,
+            legend: {
+                display: false
+            }
+
+        }
+    });
+
+}
+function polarChart(name, lab, dat) {
+
+    var ctx;
+    ctx = document.getElementById(name);
+    window[name] = new Chart(ctx, {
+        type: 'polarArea',
+        data: {
+            labels: lab,
+            datasets: [{
+                label: 'Tweets',
+                data: dat,
+                backgroundColor: [
+                    'rgba(255, 99, 132, 0.2)',
+                    'rgba(54, 162, 235, 0.2)',
+                    'rgba(255, 206, 86, 0.2)',
+                    'rgba(75, 192, 192, 0.2)',
+                    'rgba(153, 102, 255, 0.2)',
+                    'rgba(255, 159, 64, 0.2)'
+                ],
+                borderColor: [
+                    'rgba(255,99,132,1)',
+                    'rgba(54, 162, 235, 1)',
+                    'rgba(255, 206, 86, 1)',
+                    'rgba(75, 192, 192, 1)',
+                    'rgba(153, 102, 255, 1)',
+                    'rgba(255, 159, 64, 1)'
+                ],
+                borderWidth: 1
+            }]
+        },
+        options: {
+
+            resposive: true,
+            maintainAspectRatio: false
+
+
+        }
+    });
+
 }
 
 function lineChart(name, lab, dat) {
