@@ -1,14 +1,11 @@
 // Get the form instance
 var socket = io();
 val = false;
-//$("#sql").focusout(function () {
-//    var value = $("#sql").val();
-//    socket.emit('va', value);
+
+//socket.on('sqlval', function (vali) {
+//    console.log(vali);
+//    val = vali;
 //});
-socket.on('sqlval', function (vali) {
-    console.log(vali);
-    val = vali;
-});
 
 //(function ($) {
 //    $.fn.bootstrapValidator.validators.sqlval = {
@@ -69,7 +66,7 @@ $('#newChart').bootstrapValidator({
         sql: {
             validators: {
                 stringLength: {
-                    min: 2,
+                    min: 12,
                 },
                 notEmpty: {
                     message: 'Please enter SQL'

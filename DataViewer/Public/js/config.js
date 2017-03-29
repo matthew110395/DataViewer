@@ -96,10 +96,8 @@ function addTo() {
     chtit = $("#ctit").val();
     if (!charn) {
         alert("Enter a ChartName");
-        $("#errName").html("Enter Chart Name");
     } else if (!charsql) {
         alert("Enter SQL for " + charn);
-        $("#errSQL").html("Enter SQL");
     }
     else {
 
@@ -156,7 +154,6 @@ $(function () {
 
 socket.on('reload', function (data) {
     location.reload(true);
-    alert("RELOAD");
     
 });
 socket.on('log', function (data) {

@@ -219,22 +219,7 @@
         <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
         <script src="js/index.js"></script>
         <script type="text/javascript">
-            //Rotate through divs which have an id beinging with chart
-            //var divs = $('div[id^="chart"]').hide(),
-            setTimeout(function () {
-                var divs = $('.display').hide(),
-                    i = 0;
-
-                (function cycle() {
-
-                    divs.eq(i).fadeIn(400)
-                        .delay(10000)
-                        .fadeOut(400, cycle);
-
-                    i = ++i % divs.length;
-
-                })();
-            }, 1000);
+           
         </script>
     </div>
 

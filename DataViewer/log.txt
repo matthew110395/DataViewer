@@ -1,1 +1,4 @@
-Error: connect ETIMEDOUT
+Traceback (most recent call last):
+  File "Twitter/Spark_MLcurr.py", line 4, in <module>
+    from pyspark import SparkContext
+ImportError: No module named pyspark

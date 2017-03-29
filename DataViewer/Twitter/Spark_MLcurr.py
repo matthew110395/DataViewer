@@ -119,12 +119,14 @@ try:
     try:
       model = NaiveBayes.train(training)
     except java.lang.OutOfMemoryError:
-      print('Cannot train spark model')
+      with open("log.txt", "a") as myfile:
+		myfile.write("ERR\tCannot train spark model\n")
       exit()
 
 except:
-    print('Cannot train spark model')
-    exit()
+    with open("log.txt", "a") as myfile:
+		myfile.write("ERR\tCannot train spark model\n")
+	exit()
 try:    
 
     pre= test.map(lambda point: (point.label,model.predict(point.features)))
@@ -134,8 +136,9 @@ try:
 
 #print(test_accuracy)
 except:
-    print('Cannot test spark model')
-    exit()
+    with open("log.txt", "a") as myfile:
+		myfile.write("ERR\tCannot test spark model\n")
+	exit()
 
 print('****************************Spark model Trained************************')
 time.sleep(1)

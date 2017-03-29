@@ -4,27 +4,24 @@ var tweetByDayLab = [];
 var tweetByDayDat = [];
 
 $.getJSON("../config.json", function (json) {
-    console.log(json);
     if (json.charts.length < 1) {
         window.location.href = "./config.html";
     }
-    for (x in json.charts) {
-        console.log(json.charts[x]);
-    }
 });
 
-function nextDiv() {
-    var i = 0;
-    $('.display').each(function () {
-        i++;
-        $(this).val(i);
 
-    });
-    i = i + 1;
-    var next = "chart" + i;
+//function nextDiv() {
+//    var i = 0;
+//    $('.display').each(function () {
+//        i++;
+//        $(this).val(i);
 
-    return next;
-}
+//    });
+//    i = i + 1;
+//    var next = "chart" + i;
+
+//    return next;
+//}
 
 setInterval(function () {
     var date = new Date();
@@ -36,11 +33,25 @@ setInterval(function () {
     $('#time').html(time);
 }, 1000);
 
+//Rotate through divs which have an id beinging with chart
+//var divs = $('div[id^="chart"]').hide(),
+setTimeout(function () {
+    var divs = $('.display').hide(),
+        i = 0;
 
+    (function cycle() {
+
+        divs.eq(i).fadeIn(400)
+            .delay(10000)
+            .fadeOut(400, cycle);
+
+        i = ++i % divs.length;
+
+    })();
+}, 1000);
 
 socket.on('reload', function (data) {
     location.reload(true);
-    alert("RELOAD");
 
 });
 
@@ -117,7 +128,7 @@ function pieChart(name, lab, dat) {
             data: {
                 labels: lab,
                 datasets: [{
-                    label: 'Tweets',
+                    label: '',
                     data: dat,
                     backgroundColor: [
                         'rgba(255, 99, 132, 0.2)',
@@ -157,7 +168,7 @@ function doughnutChart(name, lab, dat) {
         data: {
             labels: lab,
             datasets: [{
-                label: 'Tweets',
+                label: '',
                 data: dat,
                 backgroundColor: [
                     'rgba(255, 99, 132, 0.2)',
@@ -197,7 +208,7 @@ function radarChart(name, lab, dat) {
         data: {
             labels: lab,
             datasets: [{
-                label: 'Tweets',
+                label: '',
                 data: dat,
                 backgroundColor: [
                     'rgba(255, 99, 132, 0.2)',
@@ -279,7 +290,7 @@ function lineChart(name, lab, dat) {
         data: {
             labels: lab,
             datasets: [{
-                label: "Tweets",
+                label: "",
                 fill: false,
                 lineTension: 0.1,
                 backgroundColor: "rgba(75,192,192,0.4)",

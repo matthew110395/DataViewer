@@ -13,9 +13,6 @@ var path = require('path')
 
 var Q = require('q');
 
-
-//var child = require('child_process');
-//var python = child.spawn( 'python',['Twitter/Spark_MLcurr.py']);
 var spawn = require("child_process").spawn;
 //var spawn = require("child_process").spawn;
 //var p = spawn("python", ["Twitter/Spark_MLcurr.py"], {detached: true, stdio: 'ignore'});
@@ -42,7 +39,8 @@ p.stdout.on('end', function (data) {
     }
     console.log(data);
 });
-p.stderr.on('data', function (data) {
+    p.stderr.on('data', function (data) {
+        fs.writeFile('log.txt', data.toString());
     console.log(data.toString());
 });
 p.stdin.write(JSON.stringify(data));
@@ -62,7 +60,6 @@ con.connect(function (err) {
     if (err) {
         console.log('Error connecting to Db');
         fs.writeFile('log.txt', err);
-
         return;
     }
     console.log('Connection established');
@@ -175,49 +172,7 @@ setInterval(function () {
             io.emit('ready', "");
             io.emit(values.cname, send);
         });
-
-        //con.query(conf.charts[n].csql, function (err, datar, fields) {
-
-        //        console.log(fields);
-        //        //if (err) throw err
-        //        sdata = datar
-
-        //        //console.log(sdata);
-
-
-        //        console.log('Data received from Db:\n');
-        //        //console.log(sdata);
-
-        //        labels = [];
-        //        data = [];
-
-        //        for (j in sdata) {
-        //            //var obj = [];
-        //            //for (var key in sdata[i]) {
-        //            //    obj.push(sdata[i].
-        //            //}
-
-        //            if (fields.length>1) {
-        //                labels.push(sdata[j][fields[0].name]);
-        //                data.push(sdata[j][fields[1].name]);
-        //            } else {
-        //                data.push(sdata[j][fields[0].name]);
-        //            }
-        //        }
-        //        //console.log(labels);
-        //        console.log(data);
-
-        //        send = {
-        //            labs: labels,
-        //            dat: data
-        //        };
-
-
-        //console.log(conf.charts[n].name, send);
-
-        //io.emit(conf.charts[n].name, send);
-        //});
-
+        
         n++;
     }
 
@@ -226,63 +181,63 @@ setInterval(function () {
 
 
 
-function refNoTweets() {
-    con.query("SELECT Count(tid) AS 'noTw' FROM tweets WHERE right(created,4) = DATE_FORMAT(CURDATE(),'%Y') AND left(created,10)=DATE_FORMAT(CURDATE(),'%a %b %d')", function (err, rows) {
-        if (err) throw err;
+//function refNoTweets() {
+//    con.query("SELECT Count(tid) AS 'noTw' FROM tweets WHERE right(created,4) = DATE_FORMAT(CURDATE(),'%Y') AND left(created,10)=DATE_FORMAT(CURDATE(),'%a %b %d')", function (err, rows) {
+//        if (err) throw err;
 
-        //console.log('Data received from Db:\n');
-        if (noTweets != rows[0].noTw) {
+//        //console.log('Data received from Db:\n');
+//        if (noTweets != rows[0].noTw) {
 
-            noTweets = rows[0].noTw;
-            io.emit('noTw', noTweets);
-        }
+//            noTweets = rows[0].noTw;
+//            io.emit('noTw', noTweets);
+//        }
 
 
-    });
+//    });
 
-}
-function tweetbyday() {
-    con.query("SELECT Left(created,3) AS 'Day', count(tid) AS noTweets FROM tweets WHERE str_to_date(concat(substring(created,9,2),'-',substring(created,5,3),'-', right(created,4)),'%d-%M-%Y')<=curdate()AND str_to_date(concat(substring(created,9,2),'-',substring(created,5,3),'-', right(created,4)),'%d-%M-%Y')>date_add(curdate(),INTERVAL -7 DAY) GROUP By Left(created,3)", function (err, tws) {
-        if (err) throw err;
+//}
+//function tweetbyday() {
+//    con.query("SELECT Left(created,3) AS 'Day', count(tid) AS noTweets FROM tweets WHERE str_to_date(concat(substring(created,9,2),'-',substring(created,5,3),'-', right(created,4)),'%d-%M-%Y')<=curdate()AND str_to_date(concat(substring(created,9,2),'-',substring(created,5,3),'-', right(created,4)),'%d-%M-%Y')>date_add(curdate(),INTERVAL -7 DAY) GROUP By Left(created,3)", function (err, tws) {
+//        if (err) throw err;
 
-        //console.log('Data received from Db:\n');
-        //console.log(tws);
-        labels = [];
-        data = [];
-        for (i in tws) {
-            labels.push(tws[i].Day);
-            data.push(tws[i].noTweets);
-        }
-        //console.log(labels);
-        //console.log(data);
-        send = {
-            labs: labels,
-            dat: data
-        };
+//        //console.log('Data received from Db:\n');
+//        //console.log(tws);
+//        labels = [];
+//        data = [];
+//        for (i in tws) {
+//            labels.push(tws[i].Day);
+//            data.push(tws[i].noTweets);
+//        }
+//        //console.log(labels);
+//        //console.log(data);
+//        send = {
+//            labs: labels,
+//            dat: data
+//        };
 
-        io.emit('twpday', send);
+//        io.emit('twpday', send);
 
-    });
+//    });
 
-}
+//}
 //setInterval(refNoTweets, 5000);
 //setInterval(tweetbyday, 5000);
 
 
 io.on('connection', function (socket) {
 
-    socket.on('va', function (sql) {
-        con.query(sql, function (err, datar, fields) {
-            if (err) {
-                socket.emit('sqlval', false);
-            } else {
-                socket.emit('sqlval', true);
-            }
-        });
-    });
+    //socket.on('va', function (sql) {
+    //    con.query(sql, function (err, datar, fields) {
+    //        if (err) {
+    //            socket.emit('sqlval', false);
+    //        } else {
+    //            socket.emit('sqlval', true);
+    //        }
+    //    });
+    //});
 
     //console.log("TEST");
-    io.emit('temp', 'test1');
+    //io.emit('temp', 'test1');
     socket.on('append', function (data) {
 
         //console.log(data);
@@ -502,18 +457,18 @@ function remJS(name, type) {
     });
     io.emit('reload');
 }
-function remarr(arr, name, value) {
-    jsdom.env(name, [], function (errors, window) {
-        var $ = require('jquery')(window);
-        var array = $.map(arr, function (v, i) {
-            return v[name] === value ? null : v;
-        });
-        arr.length = 0; //clear original array
-        arr.push.apply(arr, array); //push all elements except the one we want to delete
+//function remarr(arr, name, value) {
+//    jsdom.env(name, [], function (errors, window) {
+//        var $ = require('jquery')(window);
+//        var array = $.map(arr, function (v, i) {
+//            return v[name] === value ? null : v;
+//        });
+//        arr.length = 0; //clear original array
+//        arr.push.apply(arr, array); //push all elements except the one we want to delete
 
-    });
-    return arr;
-}
+//    });
+//    return arr;
+//}
 function remJSON(name, type, ctitle) {
     //$.getJSON("/config.json", function (data) {
     //    data.charts.push(data);
@@ -555,9 +510,6 @@ function remJSON(name, type, ctitle) {
     });
     io.emit('reload');
 }
-
-
-
 
 function updateHTML(data) {
     name = data.name;
