@@ -109,6 +109,7 @@ function query(qer, name) {
 var i = 0;
 setInterval(function () {
     var n = 0
+    delete require.cache[require.resolve('./Public/config.json')]
     conf = require('./Public/config.json');
     //for (var n = 0; n < conf.charts.length; n++) {
     while (n < conf.charts.length) {
@@ -238,12 +239,12 @@ io.on('connection', function (socket) {
 
     //console.log("TEST");
     //io.emit('temp', 'test1');
-    socket.on('append', function (data) {
+    socket.on('append', function (datau) {
 
         //console.log(data);
-        updateJSON(data);
-        updateJS(data);
-        updateHTML(data);
+        updateJSON(datau);
+        updateJS(datau);
+        updateHTML(datau);
 
     });
     socket.on('remove', function (datao) {
@@ -545,16 +546,27 @@ function updateHTML(data) {
 }
 
 
-function updateJSON(data) {
+function updateJSON(dataj) {
     //$.getJSON("/config.json", function (data) {
     //    data.charts.push(data);
     //});
+    var obj;
+    fs.readFile('./Public/config.json', 'utf8', function (err, jdata) {
+        if (err) {
+            console.log(err);
+            // handle error
+            return;
+        }
 
-    var obj = require('./Public/config.json');
-    obj.charts.push(data);
-    fs.writeFile('./Public/config.json', JSON.stringify(obj), function (err) {
-        console.log(err);
+        obj = JSON.parse(jdata);
+        obj.charts.push(dataj);
+        fs.writeFile('./Public/config.json', JSON.stringify(obj), function (err) {
+            console.log(err);
+        });
     });
+
+    //var obj = require('./Public/config.json');
+    
 }
 setInterval(function () {
     fs.readFile('log.txt', 'utf8', function (err, data) {

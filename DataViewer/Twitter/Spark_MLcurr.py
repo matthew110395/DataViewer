@@ -119,12 +119,12 @@ try:
     try:
       model = NaiveBayes.train(training)
     except java.lang.OutOfMemoryError:
-      with open("log.txt", "a") as myfile:
-		myfile.write("ERR\tCannot train spark model\n")
-      exit()
+		with open("log.txt", "a") as myfile:
+			myfile.write("ERR\tCannot train spark model\n")
+		exit()
 
 except:
-    with open("log.txt", "a") as myfile:
+	with open("log.txt", "a") as myfile:
 		myfile.write("ERR\tCannot train spark model\n")
 	exit()
 try:    

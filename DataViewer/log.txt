@@ -1,4 +1,4 @@
-Traceback (most recent call last):
-  File "Twitter/Spark_MLcurr.py", line 4, in <module>
-    from pyspark import SparkContext
-ImportError: No module named pyspark
+  File "Twitter/Spark_MLcurr.py", line 129
+    exit()
+         ^
+IndentationError: unindent does not match any outer indentation level
