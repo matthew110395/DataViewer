@@ -31,17 +31,14 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Public\js\jquery-ui.js" />
-    <Compile Include="Public\js\ace.js" />
     <Compile Include="Public\js\config.js" />
     <Compile Include="Public\js\index.js" />
     <Compile Include="Public\js\jquery-3.1.1.js" />
     <Compile Include="Public\js\mode-javascript.js" />
     <Compile Include="Public\js\mode-mysql.js" />
-    <Compile Include="Public\js\theme-monokai.js" />
     <Compile Include="Public\js\validator.js" />
     <Compile Include="Public\js\worker-javascript.js" />
     <Compile Include="server.js" />
-    <Compile Include="Twitter\twitter.js" />
     <Content Include="Public\config.json" />
     <Content Include="package.json" />
     <Content Include="Public\config.html" />
@@ -51,7 +48,6 @@
     <Content Include="Public\css\images\ui-icons_777777_256x240.png" />
     <Content Include="Public\css\images\ui-icons_cc0000_256x240.png" />
     <Content Include="Public\css\images\ui-icons_ffffff_256x240.png" />
-    <Content Include="Public\index2.html" />
     <Content Include="Public\index.html" />
     <Content Include="Public\css\jquery-ui.css" />
     <Content Include="README.md" />

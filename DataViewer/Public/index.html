@@ -1,6 +1,14 @@
-﻿<html xmlns="http://www.w3.org/1999/xhtml"><head>
+﻿<!--DataViewer Dashboard Application - Main Dashboard
+Author: Matthew Smith - 12004210
+
+Created as part of BSc (Hons) Computing dissertation module at University of the Highlands and Islands - 2017
+
+Created: April 2017
+Last Modified: April 2017-->
+
+<html xmlns="http://www.w3.org/1999/xhtml"><head>
     <meta charset="utf-8">
-    <title></title>
+    <title>Data Viewer</title>
     <link href="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet">
     <link href="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css" rel="stylesheet">
     <style>
@@ -51,13 +59,11 @@
             position: absolute;
             top: 50%;
             left: 50%;
-            /*color: #999;*/
             font-weight: bold;
             width: 100px;
             height: 30px;
             margin: -7px 0 0 -45px;
             text-align: center;
-            /*font-family: 'PT Sans Narrow', sans-serif;*/
             font-size: 20px;
             animation: blinker 2s linear infinite;
         }
@@ -185,6 +191,14 @@
                 <br>
                 <div id="slide" style="max-height:80%" class="container-fluid">
 
+ 
+<div class="display"><h3>Tweets Today</h3><br><h1 id="ttoday">0</h1></div>
+ 
+ 
+<div class="display"><h3>Tweets By Day</h3><canvas id="tdat"></canvas></div>
+ 
+ 
+<div class="display"><h3>Blogger vs. Non-Blogger</h3><canvas id="bnonb" style="width:98%; height:98%"></canvas></div>
  </div>
             </div>
         </div>

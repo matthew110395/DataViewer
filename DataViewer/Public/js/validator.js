@@ -1,7 +1,17 @@
-// Get the form instance
+//DataViewer Dashboard Application - Validataion
+//Author: Matthew Smith - 12004210
+
+//Created as part of BSc (Hons) Computing dissertation module at University of the Highlands and Islands - 2017
+
+//Created: April 2017
+//Last Modified: April 2017
+
+//initialize socket.io
 var socket = io();
 val = false;
 
+//*********
+//Attempted to validate SQL against the database but too slow
 //socket.on('sqlval', function (vali) {
 //    console.log(vali);
 //    val = vali;
@@ -35,6 +45,9 @@ val = false;
 //    };
 //}(window.jQuery));
 
+//**********
+
+//Validaton for new chart box
 $('#newChart').bootstrapValidator({
 
     // To use feedback icons, ensure that you use Bootstrap v3.1.0 or later

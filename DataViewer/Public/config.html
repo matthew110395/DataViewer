@@ -1,4 +1,12 @@
-﻿<!DOCTYPE html>
+﻿<!--DataViewer Dashboard Application - Config Screen
+Author: Matthew Smith - 12004210
+
+Created as part of BSc (Hons) Computing dissertation module at University of the Highlands and Islands - 2017
+
+Created: April 2017
+Last Modified: April 2017-->
+
+<!DOCTYPE html>
 
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -17,7 +25,7 @@
         }
         #log {
             height: 50%;
-            overflow: auto; /* Or scroll, depending on your needs*/
+            overflow: auto;
             width: 70%;
         }
         #vlog{
@@ -61,9 +69,6 @@
             <div class="form-group">
                 <label for="sql">SQL:</label>
                 <textarea name="sql" id="sql" cols="40" rows="5" class="form-control"></textarea>
-                <!--<input type="text" id="sql" name="sql"  />-->
-                <!--<div id="editor" class="form-control"></div>-->
-                <!--<textarea id="sql" rows="6"></textarea>-->
             </div>
             <button type="button" id="submit" onclick="addTo()" class="btn btn-default">Add</button>
         </form>
@@ -101,8 +106,6 @@
                 <div class="form-group">
                     <label for="taccessts">Access Token Secret:</label><input type="text" id="taccessts" name="taccessts" class="form-control" />
                 </div>
-
-
                 <button type="button" id="submit" onclick="DBup()" class="btn btn-default">Update</button>
             </form>
         </div>
@@ -122,10 +125,8 @@
     </div>
     
     <div id="log" title="Log" style="white-space: pre-line" hidden></div>
-    <script src="js/ace.js"></script>
     <script src="http://matthew95.co.uk:8000/socket.io/socket.io.js"></script>
     <script src="js/jquery-3.1.1.js"></script>
-
     <script src="js/config.js"></script>
     <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
     <script src="http://cdnjs.cloudflare.com/ajax/libs/bootstrap-validator/0.4.5/js/bootstrapvalidator.min.js"></script>
