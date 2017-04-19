@@ -53,6 +53,8 @@
     <Content Include="README.md" />
     <Content Include="Twitter\mlData1.csv" />
     <Content Include="Twitter\Spark_MLcurr.py" />
+    <Content Include="User Guide\User Guide.docx" />
+    <Content Include="User Guide\User Guide.pdf" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Public\css\images\" />
@@ -67,6 +69,7 @@
     <Folder Include="typings\globals\node\" />
     <Folder Include="typings\globals\socket.io\" />
     <Folder Include="typings\globals\twitter\" />
+    <Folder Include="User Guide\" />
   </ItemGroup>
   <ItemGroup>
     <TypeScriptCompile Include="typings\globals\chart.js\index.d.ts" />
