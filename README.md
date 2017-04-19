@@ -1,7 +1,7 @@
 Setup
 =====
 
-Requirements
+##Requirements
 
 -   Linux Server (Ubuntu 16.04 used in development)
 -   Git
@@ -12,7 +12,7 @@ Requirements
 -   Apache Spark
 -   PM2 (Production Node Server)
 
-Installation
+##Installation
 
 To install git run
 
